@@ -1,0 +1,163 @@
+%==============================================================================
+%  Jerome Adonis — AI / Software Engineer resume
+%  Rebuilt 2026-08-18 from "Jerome Adonis SWE resume Aug 2026.pdf"
+%
+%  DESIGN NOTES
+%
+%  Monochrome. No xcolor, no coloured links, no accent rules. Colour on a
+%  resume reads as template, and template reads as "did not write this".
+%
+%  ATS-first. Parsed by machine before a human sees it, so there are no
+%  columns, no tables holding content, no text boxes, no icons, no images.
+%  \pdfgentounicode=1 keeps the text layer extractable; without it some builds
+%  emit garbled ligatures and the ATS scores nonsense.
+%
+%  RIGHT ALIGNMENT. \raggedright sets \rightskip to "0pt plus 1fil", and that
+%  stretchable glue absorbs \hfill, so a right-hand item never reaches the
+%  margin. \headrow resets \rightskip to 0pt inside a group so \hfill has sole
+%  control. DO NOT remove that reset or the header lines collapse into a jumble.
+%
+%  NO EM DASHES anywhere in the visible text, by request.
+%==============================================================================
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[left=0.5in,right=0.5in,top=0.45in,bottom=0.45in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{colorlinks=false, pdfborder={0 0 0}}
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedbottom
+\raggedright
+
+\titleformat{\section}
+  {\normalfont\large\bfseries\scshape}
+  {}{0em}{}[\vspace{-0.5em}\rule{\linewidth}{0.4pt}\vspace{-0.2em}]
+\titlespacing*{\section}{0pt}{0.7em}{0.4em}
+
+% #1 flush left, #2 flush right. See RIGHT ALIGNMENT above.
+\newcommand{\headrow}[2]{{\rightskip=0pt\noindent#1\hfill#2\par}}
+
+\newcommand{\role}[4]{%
+  \headrow{\textbf{#1}}{\textbf{#2}}%
+  \headrow{\textit{#3}}{\textit{#4}}%
+  \vspace{0.1em}%
+}
+
+\newenvironment{bullets}
+  {\begin{itemize}[leftmargin=1.15em, itemsep=0.13em, parsep=0pt, topsep=0.22em, partopsep=0pt]}
+  {\end{itemize}\vspace{0.3em}}
+
+%==============================================================================
+\begin{document}
+
+%--- Header -------------------------------------------------------------------
+\begin{center}
+  {\LARGE\bfseries Jerome Adonis}\\[0.3em]
+  AI / Software Engineer $\cdot$ Charlotte, NC $\cdot$ (774) 464-0357 $\cdot$
+  \href{mailto:adonisherome73@gmail.com}{adonisherome73@gmail.com}\\[0.2em]
+  \href{https://linkedin.com/in/jeromeadonis}{linkedin.com/in/jeromeadonis} $\cdot$
+  \href{https://github.com/Adonis278}{github.com/Adonis278} $\cdot$
+  \href{https://jeromeadoniszw.web.app}{jeromeadoniszw.web.app}
+\end{center}
+
+%--- Summary ------------------------------------------------------------------
+\section{Summary}
+
+Computer Science graduate (4.0 GPA) and software engineer with three internships across
+Amazon Web Services, Bank of America, and Ernst \& Young, building backend, full-stack,
+and cloud-native systems in Java, Python, and JavaScript/TypeScript. AWS Solutions
+Architect certified, grounded in CS fundamentals and testing, and an experienced team
+leader (NSBE chapter president) who ships production software across the full development
+lifecycle.
+
+%--- Skills -------------------------------------------------------------------
+\section{Technical Skills}
+
+\textbf{Languages:} Java, Python, JavaScript, TypeScript, SQL, C++, Bash\\
+\textbf{Web \& Frontend:} React, Next.js, Node.js, HTML5, CSS3, REST APIs, GraphQL\\
+\textbf{Backend \& Architecture:} Spring Boot, microservices, OOP design, RESTful services, serverless\\
+\textbf{Cloud \& DevOps:} AWS (Lambda, S3, DynamoDB, Bedrock, OpenSearch, CloudWatch), GCP (foundational), CI/CD, Docker, Git\\
+\textbf{CS Fundamentals \& Testing:} Data Structures \& Algorithms, OOP, JUnit, Mockito, TDD, integration testing, Agile\\
+\textbf{Certifications:} AWS Solutions Architect, AWS Cloud Practitioner, Duke Software Engineering, Meta Front-End \& Back-End Developer
+
+%--- Experience ---------------------------------------------------------------
+\section{Experience}
+
+\role{Amazon Web Services}{New York, NY}{Solutions Architect Intern}{May to Aug 2025}
+\begin{bullets}
+  \item Cut partner-team administrative workload by \textbf{20\%} by designing and deploying
+        a Slack-integrated knowledge platform on Amazon Bedrock and AWS Lambda that replaced
+        manual document lookup with natural-language retrieval.
+  \item Reduced document validation time by \textbf{40\%} by architecting a serverless
+        ingestion pipeline across Lambda, S3, DynamoDB, and OpenSearch with automated
+        metadata extraction and duplicate detection.
+  \item Enabled \textbf{zero-downtime} releases and rapid incident response by implementing
+        CI/CD pipelines and CloudWatch monitoring with alerting, then documenting runbooks
+        and handing off to stakeholders.
+\end{bullets}
+
+\role{Bank of America}{Charlotte, NC}{Software Engineering Intern}{Jun to Aug 2023}
+\begin{bullets}
+  \item Built \textbf{Java/Spring Boot} backend microservices with RESTful APIs and modular
+        OOP design to support real-time banking workflows at production scale.
+  \item Reduced production regressions by performing root-cause analysis and writing
+        automated \textbf{JUnit/Mockito} test coverage under TDD across distributed services.
+  \item Improved team reporting efficiency by \textbf{30\%} by automating data extraction and
+        reporting in Python, eliminating a recurring manual process.
+\end{bullets}
+
+\role{Ernst \& Young LLP}{Charlotte, NC}{FSO Technology Consultant Intern}{Jun to Aug 2022}
+\begin{bullets}
+  \item Restored billing-workflow reliability for financial-sector clients by troubleshooting
+        failures on AWS through direct client engagement, and built a machine-learning
+        regression model in Python to analyse housing and lifestyle affordability by income
+        and demographics.
+\end{bullets}
+
+%--- Projects -----------------------------------------------------------------
+\section{Projects}
+
+\begin{bullets}
+  \item \textbf{CivicLens AI} \textit{(React, Firebase, LLM APIs)}: Won \textbf{2nd place and
+        \$5,000} at the InternXL AI Innovation Challenge. Converts public documents to plain
+        language with confidence scoring and human review.
+  \item \textbf{WealthBridge / BrightPocket} \textit{(Next.js, TypeScript, Firebase)}: Live
+        full-stack consumer-finance platform that ingests bank statements, categorises
+        transactions, and redacts PII before analysis.
+        \href{https://wealthbridge.web.app}{wealthbridge.web.app}
+  \item \textbf{ANFIS Stock Forecasting} \textit{(MATLAB, adaptive neuro-fuzzy inference)}:
+        Built a neuro-fuzzy model on Google equity data from 2019 to 2022, training on the
+        first two years and testing on the third. Presented as a research poster.
+  \item \textbf{COVID and Natural Disaster Correlation} \textit{(Python, NumPy, Pandas,
+        Matplotlib, Seaborn)}: Data-science study correlating pandemic case data with natural
+        disaster events, delivering visual analysis and written conclusions.
+\end{bullets}
+
+%--- Leadership ---------------------------------------------------------------
+\section{Leadership \& Awards}
+
+\begin{bullets}
+  \item \textbf{RemiBand}: top 2 of 110 teams and \textbf{\$10,500} at the Propel Future of
+        Tech Challenge, leading engineering for a five-person team.
+  \item \textbf{CodePath} Technical Interview Prep, Intermediate (2022) and Advanced (2023):
+        two years of data structures, algorithms, and complexity analysis.
+  \item \textbf{President}, NSBE Livingstone Chapter $\cdot$ \textbf{PROPEL PitchIQ Ambassador}
+        $\cdot$ Stanford d.school University Innovation Fellow.
+\end{bullets}
+
+%--- Education ----------------------------------------------------------------
+\section{Education}
+
+\role{Livingstone College}{Salisbury, NC}{B.S. Computer Science}{Graduated May 2026}
+GPA: 4.00/4.00 $\cdot$ President's List $\cdot$ Stanford d.school University Innovation Fellow
+
+\end{document}

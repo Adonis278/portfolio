@@ -1,0 +1,845 @@
+/* ==========================================================================
+   Video hero — split layout
+   Copy holds the left column, the video sits in a card on the right. The
+   scroll length of .root is what gives the sticky stage room to recede.
+   ========================================================================== */
+
+.root {
+  position: relative;
+  height: 185vh;
+  background: var(--bg-deep);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  /* No min-height. A sticky box taller than the viewport cannot stick — it
+     scrolls like a normal block and pushes content off the bottom of the
+     frame, which is exactly what happens on a landscape phone. Short
+     viewports are handled by trimming content instead (see below). */
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-deep);
+}
+
+/* --------------------------------------------------------------------------
+   Ambient bed
+   The blurred duplicate is now the page's whole backdrop: the sharp plate
+   lives in the showcase card, so this layer supplies the colour and the glow
+   that the card sits inside.
+   -------------------------------------------------------------------------- */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform-origin: 50% 45%;
+  transition: opacity 1.6s var(--ease-out);
+  will-change: transform, opacity;
+}
+
+.stageReady {
+  opacity: 1;
+}
+
+/* Carries the scroll-scrubbed push-in, kept separate from .stage so the
+   entrance and the scroll never animate the same property at once. */
+.plate {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 42%;
+  will-change: transform;
+}
+
+/* Oversized so the blur radius never reveals a hard edge. */
+.ambient {
+  position: absolute;
+  top: -12%;
+  left: -12%;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  /* Centred: the subject sits mid-frame in this plate. The previous video had
+     him left of centre, which is why this used to be biased to 42%. */
+  object-position: 50% 45%;
+  filter: blur(72px) saturate(200%) brightness(0.55);
+  transform: scale(1.2);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Colour grade
+   -------------------------------------------------------------------------- */
+
+.grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.grade > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* Opened up around the right column so the card reads as the lit subject and
+   the left column falls away into the dark. */
+.vignette {
+  background: radial-gradient(
+    ellipse 72% 68% at 64% 48%,
+    transparent 0%,
+    rgba(3, 4, 8, 0.24) 52%,
+    rgba(3, 4, 8, 0.66) 84%,
+    rgba(2, 3, 6, 0.92) 100%
+  );
+}
+
+/* Warm practical, echoing the desk lamp at frame left in the plate. */
+.warmLight {
+  background: radial-gradient(
+    ellipse 58% 56% at 12% 74%,
+    rgba(255, 122, 42, 0.3) 0%,
+    rgba(255, 122, 42, 0.1) 42%,
+    transparent 72%
+  );
+  mix-blend-mode: screen;
+  animation: warmBreath 18s var(--ease-in-out) infinite;
+}
+
+/* Cool monitor spill, sat behind the card so the glow appears to come off it. */
+.monitorGlow {
+  background: radial-gradient(
+    ellipse 50% 58% at 72% 38%,
+    rgba(64, 118, 255, 0.24) 0%,
+    rgba(64, 118, 255, 0.08) 44%,
+    transparent 74%
+  );
+  mix-blend-mode: screen;
+  animation: coolBreath 24s var(--ease-in-out) infinite;
+}
+
+/* Readability wash. Lighter than it needed to be over full-bleed video — the
+   backdrop is now heavily blurred and dimmed, so this only has to seat the
+   columns and darken the extremes. */
+.scrim {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(2, 3, 6, 0.72) 0%,
+      rgba(2, 3, 6, 0.24) 26%,
+      transparent 52%
+    ),
+    linear-gradient(
+      to top,
+      rgba(2, 3, 6, 0.8) 0%,
+      rgba(2, 3, 6, 0.28) 18%,
+      transparent 36%
+    ),
+    linear-gradient(
+      to right,
+      rgba(2, 3, 6, 0.72) 0%,
+      rgba(2, 3, 6, 0.3) 34%,
+      transparent 62%
+    );
+}
+
+/* Fine 35mm-style grain. Static texture, animated by offset only. */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  animation: grainShift 6s steps(6) infinite;
+}
+
+/* Darkens the whole stage as the hero scrolls away (scrubbed by GSAP). */
+.exitVeil {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: var(--bg-deep);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes warmBreath {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(1.5%, -1.5%, 0) scale(1.06);
+  }
+}
+
+@keyframes coolBreath {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate3d(0, 0, 0) scale(1.04);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(-1.5%, 1.5%, 0) scale(1);
+  }
+}
+
+@keyframes grainShift {
+  0% { background-position: 0 0; }
+  20% { background-position: -12% 6%; }
+  40% { background-position: 8% -10%; }
+  60% { background-position: -6% -8%; }
+  80% { background-position: 10% 4%; }
+  100% { background-position: 0 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
+
+.layout {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  gap: clamp(1.5rem, 3.5vh, 2.75rem);
+
+  padding: clamp(1.25rem, 3.6vw, 3.75rem);
+  /* Clears the scroll cue and, on narrow screens, the controls. */
+  padding-bottom: clamp(4.5rem, 9vh, 6rem);
+  pointer-events: none;
+}
+
+/* Two columns once there is width for them. The second query keeps landscape
+   phones side-by-side — stacking at 390px of height overflows the frame. */
+@media (min-width: 62rem), (min-width: 40rem) and (max-height: 34rem) {
+  .layout {
+    /* The card takes the larger share: it is 16:9, so extra width is the only
+       way it gains presence, whereas the copy column wraps to suit. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    align-items: center;
+    gap: clamp(2rem, 3.6vw, 3.5rem);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Copy column
+   -------------------------------------------------------------------------- */
+
+.content {
+  min-width: 0;
+  will-change: transform, opacity, filter;
+}
+
+.contentInner {
+  width: 100%;
+}
+
+.reveal {
+  will-change: transform, opacity, filter;
+}
+
+.tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0 0 clamp(0.8rem, 1.6vh, 1.4rem);
+  filter: blur(0px);
+
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1vw, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.taglineDot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--accent-warm);
+  box-shadow: 0 0 0.9rem 0.15rem rgba(255, 138, 61, 0.75);
+  animation: dotPulse 3.4s var(--ease-in-out) infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.78); }
+}
+
+/* Bounded by height as well as width: the column is only half the viewport
+   now, and a purely vw-based size overflows it on short screens. */
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, min(8.2vw, 12.5vh), 8rem);
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Mask that the name wipes up through. */
+.nameLine {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+/* inline-block, not block: background-clip:text maps the gradient across the
+   element's box, and a full-width block box put ~65% of the ramp (including
+   the orange end) outside the glyphs, so ADONIS rendered almost pure white.
+   Shrink-wrapping the box to the text makes the gradient land on the letters. */
+.nameLineInner {
+  display: inline-block;
+  vertical-align: top;
+  will-change: transform;
+  text-shadow: 0 0.15em 2.4rem rgba(0, 0, 0, 0.55);
+}
+
+/* Second line takes the warm key so the two lines read as lit, not flat. */
+.nameLineAccent {
+  background: linear-gradient(
+    100deg,
+    var(--text-primary) 0%,
+    #ffd9b4 38%,
+    var(--accent-warm) 72%,
+    #ff6a1f 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.rule {
+  width: min(19rem, 60%);
+  height: 1px;
+  margin: clamp(0.9rem, 1.9vh, 1.6rem) 0 clamp(0.8rem, 1.6vh, 1.35rem);
+  background: linear-gradient(
+    to right,
+    rgba(255, 138, 61, 0.9),
+    rgba(255, 255, 255, 0.24) 55%,
+    transparent
+  );
+  will-change: transform;
+}
+
+.subtitle {
+  max-width: 40rem;
+  margin: 0;
+  filter: blur(0px);
+  font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.role {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.4vw, 1.22rem);
+  letter-spacing: -0.012em;
+  color: var(--text-primary);
+}
+
+.subtitleBody {
+  display: block;
+  text-wrap: pretty;
+}
+
+/* Back in normal flow. They were pinned to the bottom-left when the video was
+   full-bleed and the copy had to dodge his face; the split layout gives the
+   column its own space, so the links can simply follow the description. */
+/* Primary calls to action. */
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: clamp(1.2rem, 2.6vh, 2rem);
+  pointer-events: auto;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.3rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--ease-duration) var(--ease-out),
+    border-color var(--ease-duration) var(--ease-out),
+    color var(--ease-duration) var(--ease-out),
+    transform var(--ease-duration) var(--ease-out);
+}
+
+.ctaPrimary {
+  color: #05060a;
+  background: var(--accent-warm);
+  font-weight: 600;
+  box-shadow: 0 0.8rem 2rem -0.5rem rgba(255, 138, 61, 0.55);
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  background: var(--accent-warm-soft);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.ctaSecondary {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.ctaSecondary:hover,
+.ctaSecondary:focus-visible {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  margin: clamp(0.9rem, 2vh, 1.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: auto;
+}
+
+.metaItem {
+  will-change: transform, opacity;
+}
+
+.metaLink {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.28rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+
+  transition: color var(--ease-duration) var(--ease-out);
+}
+
+.metaLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 600ms var(--ease-out);
+}
+
+.metaLink:hover,
+.metaLink:focus-visible {
+  color: var(--accent-warm-soft);
+  outline: none;
+}
+
+.metaLink:hover::after,
+.metaLink:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* --------------------------------------------------------------------------
+   Showcase card
+   -------------------------------------------------------------------------- */
+
+.showcase {
+  min-width: 0;
+  justify-self: stretch;
+  will-change: transform, opacity;
+}
+
+/* Exists purely to give the scroll-out and the pointer parallax their own
+   element. The entrance tween owns .showcase, and a scrubbed tween that
+   shares a property with a `.from()` records that from's start value as its
+   own — which is what left the card invisible after scrolling back up. */
+.showcaseInner {
+  min-width: 0;
+  will-change: transform, opacity, filter;
+}
+
+/*
+ * Exactly 16 / 9 — the source ratio. The plate is a composed shot (warm desk
+ * lamp and bookshelf at frame left, monitor centre, window blinds right) and
+ * an earlier full-bleed version cropped into it to make room for copy, which
+ * threw all of that away and left a close-up of the monitor. Matching the
+ * ratio means `cover` has nothing to crop and the whole frame survives.
+ *
+ * The width cap is expressed in vh so the card can never grow taller than the
+ * viewport on short screens; without it a wide 900px-tall laptop pushes the
+ * card past the fold.
+ */
+.showcaseFrame {
+  position: relative;
+  width: min(100%, calc(58vh * 16 / 9));
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+
+  border-radius: clamp(0.75rem, 1.4vw, 1.35rem);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  isolation: isolate;
+
+  background: #05060a;
+  box-shadow:
+    0 2.5rem 5rem rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 6rem -1rem rgba(255, 138, 61, 0.32),
+    0 0 9rem -2rem rgba(64, 118, 255, 0.34);
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  backface-visibility: hidden;
+}
+
+/* Glass highlight across the top edge, so the card reads as a lit surface
+   rather than a hole cut in the page. */
+.showcaseSheen {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.14) 0%,
+      transparent 14%
+    ),
+    radial-gradient(
+      ellipse 90% 60% at 50% 108%,
+      rgba(2, 3, 6, 0.55),
+      transparent 70%
+    );
+}
+
+/* --------------------------------------------------------------------------
+   Controls — anchored inside the card
+   -------------------------------------------------------------------------- */
+
+.controls {
+  position: absolute;
+  z-index: 2;
+  right: clamp(0.6rem, 1.4vw, 1.1rem);
+  bottom: clamp(0.6rem, 1.4vw, 1.1rem);
+
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  pointer-events: auto;
+}
+
+.control {
+  will-change: transform, opacity;
+}
+
+.soundHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-right: 0.2rem;
+  padding: 0.62rem 1rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-secondary);
+
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+
+  opacity: 0;
+  transform: translateX(0.75rem) scale(0.94);
+  pointer-events: none;
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.soundHintVisible {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.soundHintPulse {
+  position: relative;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--accent-warm);
+}
+
+.soundHintPulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent-warm);
+  animation: hintPing 2.2s var(--ease-out) infinite;
+}
+
+@keyframes hintPing {
+  0% { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(3.4); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Scroll cue
+   -------------------------------------------------------------------------- */
+
+.cue {
+  position: absolute;
+  z-index: 6;
+  left: clamp(1.25rem, 4vw, 4rem);
+  bottom: clamp(1.25rem, 3.5vh, 2.5rem);
+
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.5rem 0;
+
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform, opacity;
+
+  transition: color var(--ease-duration) var(--ease-out);
+}
+
+.cue:hover,
+.cue:focus-visible {
+  color: var(--text-primary);
+  outline: none;
+}
+
+.cueLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+/* Horizontal now that the cue sits on the baseline of the copy column. */
+.cueTrack {
+  position: relative;
+  width: 3.4rem;
+  height: 1px;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.16) 30%,
+    rgba(255, 255, 255, 0.16) 70%,
+    transparent
+  );
+}
+
+/* Travelling highlight — the pulse. */
+.cuePulse {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--accent-warm) 55%,
+    rgba(255, 255, 255, 0.9)
+  );
+  animation: cueTravel 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes cueTravel {
+  0% { transform: translateX(-120%); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateX(240%); opacity: 0; }
+}
+
+.cueArrow {
+  display: grid;
+  place-items: center;
+  transition: transform 600ms var(--ease-out);
+}
+
+.cue:hover .cueArrow,
+.cue:focus-visible .cueArrow {
+  transform: translateY(0.28rem);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+/* Single-column: the card follows the copy, so the video is the last thing
+   before the fold rather than competing with the headline for the top. */
+@media (max-width: 61.99rem) {
+  .showcaseFrame {
+    width: min(100%, calc(38vh * 16 / 9));
+  }
+}
+
+@media (max-width: 48rem) {
+  .root {
+    height: 170vh;
+  }
+
+  /* Holds the tagline on one line at 360px — it wraps to a lonely
+     "FULL-STACK" otherwise. */
+  .tagline {
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+  }
+
+  .name {
+    font-size: clamp(2.6rem, min(13vw, 10vh), 5rem);
+    letter-spacing: -0.042em;
+  }
+
+  .subtitle {
+    max-width: 34rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .meta {
+    gap: 1.1rem;
+  }
+
+  .cue {
+    left: clamp(1.25rem, 4vw, 2rem);
+    bottom: 1.15rem;
+  }
+}
+
+/* Short and small: the copy plus a 16:9 card is more than the frame holds, so
+   the description gives way. The card stays — it is the point of the page. */
+@media (max-width: 48rem) and (max-height: 47rem) {
+  .subtitleBody {
+    display: none;
+  }
+
+  .name {
+    font-size: min(12vw, 8.5vh);
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    padding: 0.6rem 1rem;
+    font-size: 0.62rem;
+  }
+}
+
+/* Landscape phones run the two-column layout with barely any height: drop the
+   rule and the description so the name, role and card all still fit. */
+@media (max-height: 34rem) {
+  .tagline,
+  .rule,
+  .subtitleBody {
+    display: none;
+  }
+
+  /* The résumé button survives every breakpoint — it is the point of the page
+     for a recruiter. */
+  .ctaRow {
+    margin-top: 0.9rem;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    padding: 0.55rem 1rem;
+    font-size: 0.6rem;
+  }
+
+  .layout {
+    padding-bottom: clamp(1.25rem, 4vh, 2.5rem);
+  }
+
+  .showcaseFrame {
+    width: min(100%, calc(72vh * 16 / 9));
+  }
+
+  .cue {
+    display: none;
+  }
+}
+
+@media (max-width: 26rem) {
+  .soundHint {
+    font-size: 0.6rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .warmLight,
+  .monitorGlow,
+  .grain,
+  .taglineDot,
+  .cuePulse,
+  .soundHintPulse::after {
+    animation: none;
+  }
+
+  .cuePulse {
+    transform: translateX(60%);
+    opacity: 0.8;
+  }
+
+  .stage {
+    transition-duration: 1ms;
+  }
+}

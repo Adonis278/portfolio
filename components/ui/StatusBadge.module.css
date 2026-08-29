@@ -1,0 +1,54 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.7rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--bg-panel);
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 0.36rem;
+  height: 0.36rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Shipped and reachable. */
+.live {
+  color: #7ee2a8;
+  border-color: rgba(126, 226, 168, 0.28);
+  background: rgba(126, 226, 168, 0.08);
+}
+
+.live .dot {
+  box-shadow: 0 0 0.6rem 0.1rem rgba(126, 226, 168, 0.6);
+}
+
+/* Externally validated — a placement or a prize. */
+.award {
+  color: var(--accent-warm-soft);
+  border-color: rgba(255, 138, 61, 0.32);
+  background: rgba(255, 138, 61, 0.1);
+}
+
+/* Real, running code that is not a product. */
+.build {
+  color: #9db8ff;
+  border-color: rgba(77, 124, 255, 0.3);
+  background: rgba(77, 124, 255, 0.09);
+}
+
+/* Designed but not built. Deliberately the quietest of the four. */
+.concept {
+  color: var(--text-muted);
+}

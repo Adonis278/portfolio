@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+build/
+
+# Firebase
+.firebase/
+firebase-debug.log
+.runtimeconfig.json
+.env*.local
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
+
+# Working source material, not part of the site
+/Jerome Portfolio vid.mp4
+/Portfolio Video Example.mp4
+/Jerome_Adonis_July_2026 resume.pdf
+resume-latex/*.aux
+resume-latex/*.log
+resume-latex/*.out

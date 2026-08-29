@@ -1,0 +1,12 @@
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  /* Promote to its own layer so the compositor never repaints it with the
+     overlaying text. */
+  will-change: transform;
+  contain: strict;
+}

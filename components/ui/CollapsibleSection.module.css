@@ -1,0 +1,161 @@
+.section {
+  border-bottom: 1px solid var(--hairline);
+  /* Clears the sticky section nav when an anchor link lands here. */
+  scroll-margin-top: 4.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Summary row
+   -------------------------------------------------------------------------- */
+
+.summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 2.5rem);
+
+  width: min(100% - clamp(2.5rem, 10vw, 11rem), var(--shell));
+  margin-inline: auto;
+  padding-block: clamp(3rem, 8vh, 5rem) clamp(1.5rem, 3vh, 2.25rem);
+
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Removes the default disclosure triangle in every engine. */
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary::marker {
+  content: "";
+}
+
+.summary:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
+.summaryText {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 1rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.2vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
+  transition: color var(--ease-duration) var(--ease-out);
+}
+
+.summary:hover .title {
+  color: var(--accent-warm-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Toggle affordance
+   -------------------------------------------------------------------------- */
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  padding: 0.5rem 0.9rem;
+
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-muted);
+
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--bg-panel);
+
+  transition:
+    color var(--ease-duration) var(--ease-out),
+    border-color var(--ease-duration) var(--ease-out);
+}
+
+.summary:hover .toggle {
+  color: var(--accent-warm-soft);
+  border-color: rgba(255, 138, 61, 0.4);
+}
+
+/* Only one of the two labels is ever shown, so the control reads correctly
+   in both states without any JavaScript. */
+.whenOpen {
+  display: none;
+}
+
+.section[open] .whenOpen {
+  display: inline;
+}
+
+.section[open] .whenClosed {
+  display: none;
+}
+
+.chevron {
+  transition: transform 400ms var(--ease-out);
+}
+
+.section[open] .chevron {
+  transform: rotate(180deg);
+}
+
+/* --------------------------------------------------------------------------
+   Body
+   -------------------------------------------------------------------------- */
+
+.body {
+  width: min(100% - clamp(2.5rem, 10vw, 11rem), var(--shell));
+  margin-inline: auto;
+  padding-bottom: clamp(3rem, 8vh, 5rem);
+}
+
+.intro {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.62;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/*
+ * No ::details-content animation here, deliberately.
+ *
+ * An earlier version animated the fold with `height: 0` on
+ * `.section::details-content` plus `height: auto` on the `[open]` variant.
+ * The build pipeline mangled those rules: they were absent from the readable
+ * CSSOM, yet the class still defeated the browser's native collapse, so
+ * closing a section left its content at full height. Measured directly:
+ * removing this class took a closed section from 2274px back to 168px.
+ *
+ * Native <details> collapse is correct and instant. Correctness beats an
+ * animated fold, especially one that was being silently rewritten.
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

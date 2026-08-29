@@ -1,35 +1,41 @@
-import VideoIntro from "@/components/VideoIntro/VideoIntro";
-import SectionNav from "@/components/ui/SectionNav";
-import SelectedWork from "@/components/sections/SelectedWork";
-import Research from "@/components/sections/Research";
-import Leadership from "@/components/sections/Leadership";
-import Work from "@/components/sections/Work";
-import Contact from "@/components/sections/Contact";
+import Link from "next/link";
+import Hero from "@/components/Hero/Hero";
+import ProjectRows from "@/components/work/ProjectRows";
+import { SectionTitle, pageStyles } from "@/components/ui/Page";
+import { homeWork } from "@/lib/featured";
+import styles from "./home.module.css";
 
 /**
- * Page order is deliberate. A reviewer lands on the hero, then meets evidence
- * immediately: shipped projects, then research, then employment, then the
- * leadership and awards that back all three.
+ * Home.
  *
- * SectionNav sits directly after the hero so it only pins once the video has
- * scrolled away, and every section below is collapsible so the page can be
- * folded down to a scannable index rather than one long scroll.
+ * The whole page is now the hero plus four projects. Everything else that used
+ * to live here has a page of its own, reachable from the nav, so a reviewer who
+ * wants the research or the employment history goes straight there instead of
+ * scrolling past it to find out whether they care.
+ *
+ * Four is the shortlist. A fifth would start the scroll that this rebuild is
+ * trying to remove.
  */
-const WORK_ID = "work";
-const RESEARCH_ID = "research";
-const EXPERIENCE_ID = "experience";
-const LEADERSHIP_ID = "leadership";
-
 export default function Page() {
   return (
     <main>
-      <VideoIntro nextSectionId={WORK_ID} />
-      <SectionNav />
-      <SelectedWork id={WORK_ID} />
-      <Research id={RESEARCH_ID} />
-      <Work id={EXPERIENCE_ID} />
-      <Leadership id={LEADERSHIP_ID} />
-      <Contact id="contact" />
+      <Hero nextSectionId="featured" />
+
+      <section className={pageStyles.shell} id="featured">
+        <SectionTitle index="01">Selected work</SectionTitle>
+        <ProjectRows items={homeWork} />
+
+        <div className={styles.more}>
+          <Link className={styles.moreLink} href="/work">
+            All work
+            <span aria-hidden="true"> →</span>
+          </Link>
+          <p className={styles.moreNote}>
+            Research, employment history and credentials each have their own
+            page.
+          </p>
+        </div>
+      </section>
     </main>
   );
 }

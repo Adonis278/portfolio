@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Project rows
+   ========================================================================== */
+
+/* The whole list is one glass panel; rows are divided by hairlines inside it
+   rather than each being its own card. Six separate cards competed with each
+   other, which is the problem this rebuild is solving. */
+.list {
+  margin: 0;
+  padding: 0 clamp(1.1rem, 3vw, 2rem);
+  list-style: none;
+  overflow: hidden;
+}
+
+/*
+ * Rows, not cards. A card draws a box around every project and gives them all
+ * equal visual weight; a ruled list lets the eye run down the names and stop
+ * only at the one it wants. It is also what both reference sites do.
+ */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr);
+  gap: clamp(1rem, 4vw, 3.5rem);
+
+  padding-block: clamp(1.6rem, 3.5vh, 2.4rem);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.9rem;
+  min-width: 0;
+}
+
+.index {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--stone);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 48, "SOFT" 0, "WONK" 0;
+  font-size: clamp(1.4rem, 2.6vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+
+.body {
+  min-width: 0;
+}
+
+.context {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-warm-soft);
+}
+
+.line {
+  font-size: clamp(0.94rem, 1.1vw, 1.02rem);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.1rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Bare text, not chips. Six chip rows on one page reads as clutter. */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--accent-warm-deep);
+  padding: 0.34rem 0.7rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  transition:
+    color var(--ease-duration) var(--ease-out),
+    border-color var(--ease-duration) var(--ease-out);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #fff;
+  background: var(--accent-warm);
+  border-color: transparent;
+  outline: none;
+}
+
+@media (max-width: 46rem) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}

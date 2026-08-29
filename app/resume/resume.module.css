@@ -4,7 +4,7 @@
   background: var(--bg-deep);
   background-image: radial-gradient(
     ellipse 80% 40% at 20% 0%,
-    rgba(255, 122, 42, 0.08),
+    var(--accent-tint),
     transparent 60%
   );
 }
@@ -87,7 +87,7 @@
   text-decoration: none;
   white-space: nowrap;
 
-  border-radius: 999px;
+  border-radius: 2px;
   border: 1px solid var(--hairline);
   transition:
     background-color var(--ease-duration) var(--ease-out),
@@ -97,7 +97,7 @@
 }
 
 .primary {
-  color: #05060a;
+  color: var(--bg-deep);
   background: var(--accent-warm);
   border-color: transparent;
   font-weight: 600;
@@ -118,7 +118,7 @@
 .secondary:hover,
 .secondary:focus-visible {
   color: var(--accent-warm-soft);
-  border-color: rgba(255, 138, 61, 0.4);
+  border-color: var(--accent-line);
   transform: translateY(-1px);
   outline: none;
 }

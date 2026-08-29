@@ -1,0 +1,38 @@
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-top: clamp(1.75rem, 4vh, 2.5rem);
+}
+
+.moreLink {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-primary);
+  padding: 0.6rem 1.15rem;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: var(--glass-shadow);
+  transition:
+    background-color var(--ease-duration) var(--ease-out),
+    border-color var(--ease-duration) var(--ease-out);
+}
+
+.moreLink:hover,
+.moreLink:focus-visible {
+  background: #fff;
+  outline: none;
+}
+
+.moreNote {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}

@@ -96,7 +96,7 @@
 
 .summary:hover .toggle {
   color: var(--accent-warm-soft);
-  border-color: rgba(255, 138, 61, 0.4);
+  border-color: var(--accent-line);
 }
 
 /* Only one of the two labels is ever shown, so the control reads correctly

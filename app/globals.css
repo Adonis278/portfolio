@@ -1,49 +1,98 @@
 /* ==========================================================================
    Design tokens + reset
+
+   ── The reference, decomposed ───────────────────────────────────────────────
+   Light glassmorphism. What makes the Aarav Singh page work:
+
+   1. A near-white ground that is not white. Pale cool base with soft
+      iridescent pools bleeding through it. Glass needs something behind it to
+      refract; over flat #fff the effect disappears entirely.
+   2. Panels are white at 55-70% alpha, not grey. The tint comes from the pools
+      showing through, which is why the cards look faintly coloured without any
+      colour being declared on them.
+   3. Borders are white at ~70%, brighter than the panel, so the edge catches
+      light. Shadows are wide, soft and low-opacity in a blue-grey — never
+      black, which turns light glass muddy.
+   4. Nesting. Sections are large rounded panels, and the cards sit inside them.
+      Two levels of glass is what gives the page depth.
+   5. A floating pill nav, detached from the top edge.
+   6. One near-black filled pill for the primary action. Everything else is
+      glass. The accent colour is used on eyebrows and links only.
+
+   ── The translation ─────────────────────────────────────────────────────────
+   The reference is violet. This is blue, pulled from Jerome's headshot: the
+   navy blazer (#16233b) and the light blue shirt (#c8dbef). The cutout sits on
+   this ground with the blazer reading as the darkest value on the page, which
+   is what anchors an otherwise very light layout.
    ========================================================================== */
 
 :root {
-  /* Surfaces */
-  --bg-deep: #030407;
-  --bg-raised: #08090f;
-  --bg-panel: rgba(255, 255, 255, 0.032);
+  /* Ground */
+  --bg-deep: #eef1f8;
+  --bg-raised: rgba(255, 255, 255, 0.62);
+  --bg-panel: rgba(255, 255, 255, 0.45);
 
-  /* Typography — families come from next/font on <html> (same element as :root) */
-  --font-display: var(--font-sans, system-ui, sans-serif);
+  /* Typography */
+  --font-display: var(--font-serif, Georgia, "Times New Roman", serif);
 
-  /* Type */
-  --text-primary: #f8f5f0;
-  --text-secondary: rgba(248, 245, 240, 0.72);
-  --text-muted: rgba(248, 245, 240, 0.48);
-  --text-faint: rgba(248, 245, 240, 0.3);
+  /* Text ramp — 100 / 72 / 55 / 42 */
+  --text-primary: #131b2c;
+  --text-secondary: rgba(19, 27, 44, 0.72);
+  --text-muted: rgba(19, 27, 44, 0.58);
+  --text-faint: rgba(19, 27, 44, 0.45);
 
-  /* Practical lighting — the warm key and the monitor fill from the plate */
-  --accent-warm: #ff8a3d;
-  --accent-warm-soft: #ffbc8a;
-  --accent-warm-deep: #ff6a1f;
-  --accent-cool: #4d7cff;
+  /* Accent, off the headshot. Token names unchanged from earlier builds so
+     existing rules reskin without being rewritten. */
+  --accent-warm: #3a72b8;
+  --accent-warm-soft: #5a91d4;
+  --accent-warm-deep: #27548c;
+  --accent-cool: #7b8fb0;
+
+  /* The near-black used for the one filled control, as in the reference */
+  --ink: #141c2e;
+
+  --stone: #7b8aa3;
+  --stone-soft: #9aa8bf;
 
   /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.068);
-  --glass-bg-hover: rgba(255, 255, 255, 0.115);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-border-hover: rgba(255, 255, 255, 0.26);
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-hover: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-border-hover: #fff;
+  --glass-blur: blur(20px) saturate(160%);
+  /* Blue-grey shadow, never black: black on light glass reads as dirt. */
   --glass-shadow:
-    0 0.75rem 2rem rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+    0 10px 34px rgba(35, 60, 110, 0.09),
+    0 2px 8px rgba(35, 60, 110, 0.05);
+  --radius: 22px;
+  --radius-sm: 14px;
 
-  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline: rgba(19, 27, 44, 0.1);
+  --hairline-strong: rgba(19, 27, 44, 0.18);
 
-  /* Motion — slow and eased-out; nothing here should feel snappy */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --accent-tint: rgba(58, 114, 184, 0.08);
+  --accent-tint-strong: rgba(58, 114, 184, 0.16);
+  --accent-line: rgba(58, 114, 184, 0.32);
+
+  /* Status colours, tuned for contrast on a near-white ground */
+  --status-live: #1d7a55;
+  --status-live-line: rgba(29, 122, 85, 0.32);
+  --status-live-wash: rgba(29, 122, 85, 0.09);
+  --status-award: #8a6320;
+  --status-award-line: rgba(138, 99, 32, 0.32);
+  --status-award-wash: rgba(138, 99, 32, 0.09);
+  --status-build: #3a72b8;
+  --status-build-line: rgba(58, 114, 184, 0.3);
+  --status-build-wash: rgba(58, 114, 184, 0.08);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-duration: 420ms;
+  --ease-duration: 320ms;
 
-  --shell: 84rem;
+  --shell: 78rem;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
-
 
 *,
 *::before,
@@ -66,12 +115,35 @@ body {
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.008em;
+  line-height: 1.55;
+  letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   The ground
+
+   Point 1. Pale pools in the headshot's blues plus one cool lilac, fixed to
+   the viewport so panels blur over something that changes as the page scrolls.
+   Gradients rather than the reference's 3D chrome renders: those are licensed
+   stock, and this needs no attribution.
+   -------------------------------------------------------------------------- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(46rem 34rem at 4% -8%, rgba(126, 168, 224, 0.72), transparent 60%),
+    radial-gradient(40rem 30rem at 100% 2%, rgba(158, 166, 236, 0.62), transparent 62%),
+    radial-gradient(42rem 32rem at 96% 54%, rgba(132, 182, 230, 0.52), transparent 64%),
+    radial-gradient(52rem 38rem at 10% 96%, rgba(142, 172, 224, 0.55), transparent 64%),
+    linear-gradient(180deg, #eef1f9 0%, #e8ecf6 50%, #e4e9f4 100%);
 }
 
 img,
@@ -95,8 +167,8 @@ a {
 }
 
 ::selection {
-  background: rgba(255, 138, 61, 0.32);
-  color: #fff;
+  background: rgba(58, 114, 184, 0.22);
+  color: var(--text-primary);
 }
 
 :focus-visible {
@@ -104,7 +176,72 @@ a {
   outline-offset: 3px;
 }
 
-/* Keep the page from being scroll-jacked into motion sickness. */
+/* --------------------------------------------------------------------------
+   Glass
+
+   A global utility, not a per-module rule: backdrop-filter has to sit on the
+   element itself, and repeating this in nine CSS modules is how a recipe
+   drifts. Components compose it: `className={`glass ${styles.x}`}`.
+   -------------------------------------------------------------------------- */
+
+.glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Point 3: the lit top edge. A gradient border-image would clip the backdrop
+   filter, so the highlight is a pseudo-element hairline instead. */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.95) 20%,
+    rgba(255, 255, 255, 0.95) 80%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Point 4: a panel nested inside another panel steps down in alpha, so the
+   two levels stay distinguishable instead of merging into one flat sheet. */
+.glass .glass {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 16px rgba(35, 60, 110, 0.06);
+}
+
+.glassHover {
+  transition:
+    background-color var(--ease-duration) var(--ease-out),
+    border-color var(--ease-duration) var(--ease-out);
+}
+
+.glassHover:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+}
+
+/*
+ * Safari on iOS drops backdrop-filter inside an already-filtered ancestor, and
+ * some Firefox builds gate it behind a flag. Without blur, a 62%-white panel
+ * over a pale ground still reads — but raise it to near-opaque so text keeps
+ * its contrast rather than sitting on whatever pool happens to be behind it.
+ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

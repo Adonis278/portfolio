@@ -20,3 +20,7 @@ npm-debug.log*
 resume-latex/*.aux
 resume-latex/*.log
 resume-latex/*.out
+
+# Preview captures and résumé working copies — not part of the site
+/redesign-preview/
+/resume-backup/

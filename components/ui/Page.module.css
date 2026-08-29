@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Shared page furniture
+   ========================================================================== */
+
+.shell {
+  width: min(100% - clamp(2rem, 8vw, 8rem), var(--shell));
+  margin-inline: auto;
+  padding-top: clamp(2rem, 5vh, 3.25rem);
+}
+
+.header {
+  max-width: 44rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+}
+
+.eyebrow {
+  margin-bottom: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 96, "SOFT" 0, "WONK" 1;
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.intro {
+  max-width: 38rem;
+  margin-top: 1.4rem;
+  font-size: clamp(0.98rem, 1.15vw, 1.08rem);
+  line-height: 1.62;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* --- section headings within a page ------------------------------------- */
+
+.sectionTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+
+  margin-bottom: clamp(1.5rem, 3.5vh, 2.25rem);
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--hairline-strong);
+
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 32, "SOFT" 0, "WONK" 0;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* Borrowed from the reference sites: a small monospaced ordinal beside the
+   heading. It gives a page a sense of length without a progress bar. */
+.sectionIndex {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: var(--stone);
+}
+
+.block {
+  margin-top: clamp(2.25rem, 5.5vh, 3.5rem);
+}

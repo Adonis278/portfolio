@@ -1,0 +1,106 @@
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+
+  padding-top: clamp(1rem, 3vh, 2rem);
+  border-top: 1px solid var(--hairline);
+}
+
+.prose {
+  display: grid;
+  gap: 1.15rem;
+  max-width: 36rem;
+  padding-top: clamp(1.5rem, 3vh, 2.25rem);
+
+  font-size: clamp(0.98rem, 1.15vw, 1.06rem);
+  line-height: 1.68;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.link {
+  color: var(--accent-warm);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+  transition: border-color var(--ease-duration) var(--ease-out);
+}
+
+.link:hover,
+.link:focus-visible {
+  border-bottom-color: var(--accent-warm);
+  outline: none;
+}
+
+.portrait {
+  position: relative;
+  margin: 0;
+  padding: 1.5rem 1.5rem 0;
+  overflow: hidden;
+}
+
+.portrait::before {
+  content: "";
+  position: absolute;
+  inset: 12% 4% -6%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(120, 172, 224, 0.26), transparent 72%);
+  filter: blur(12px);
+}
+
+.portraitImg {
+  position: relative;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 18px 34px rgba(3, 9, 20, 0.55));
+}
+
+/* --- focus --------------------------------------------------------------- */
+
+.focus {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: clamp(0.75rem, 1.5vw, 1.1rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.focusItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+.focusTitle {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 32, "SOFT" 0, "WONK" 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.focusBody {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+@media (max-width: 52rem) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait {
+    order: -1;
+    max-width: 18rem;
+  }
+}

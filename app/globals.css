@@ -2,92 +2,107 @@
    Design tokens + reset
 
    ── The reference, decomposed ───────────────────────────────────────────────
-   Light glassmorphism. What makes the Aarav Singh page work:
+   Neo-brutalist "sticker book". What makes the Theo Wilder page work is six
+   mechanical rules, none of them subtle:
 
-   1. A near-white ground that is not white. Pale cool base with soft
-      iridescent pools bleeding through it. Glass needs something behind it to
-      refract; over flat #fff the effect disappears entirely.
-   2. Panels are white at 55-70% alpha, not grey. The tint comes from the pools
-      showing through, which is why the cards look faintly coloured without any
-      colour being declared on them.
-   3. Borders are white at ~70%, brighter than the panel, so the edge catches
-      light. Shadows are wide, soft and low-opacity in a blue-grey — never
-      black, which turns light glass muddy.
-   4. Nesting. Sections are large rounded panels, and the cards sit inside them.
-      Two levels of glass is what gives the page depth.
-   5. A floating pill nav, detached from the top edge.
-   6. One near-black filled pill for the primary action. Everything else is
-      glass. The accent colour is used on eyebrows and links only.
+   1. EVERY surface has the same thick black outline. 3px, pure #111, no
+      exceptions — cards, buttons, badges, image frames, avatars. The outline
+      is the design; remove it and the whole thing collapses into flat colour.
+   2. Shadows are HARD. A solid black offset with zero blur, always down-right.
+      A blurred shadow instantly reads as generic web design; the un-blurred
+      one reads as a sticker peeled off a sheet.
+   3. A saturated primary triad, used at full strength: electric blue, hot
+      yellow, coral red. No tints, no transparency, no gradients. Colour blocks
+      sit next to each other and fight, and that fight is the energy.
+   4. Slight rotation. Cards and badges sit at 1-3 degrees off square. Perfect
+      alignment kills it — the tilt is what makes it feel hand-placed.
+   5. Hand-drawn marks in the gutters: stars, squiggles, arrows, sparks. They
+      carry no information, they just fill dead space with personality.
+   6. Heavy display type, tight and black, with the accent word in a colour.
 
-   ── The translation ─────────────────────────────────────────────────────────
-   The reference is violet. This is blue, pulled from Jerome's headshot: the
-   navy blazer (#16233b) and the light blue shirt (#c8dbef). The cutout sits on
-   this ground with the blazer reading as the darkest value on the page, which
-   is what anchors an otherwise very light layout.
+   ── The translation ─────────────────────────────────────────
+   The reference is a brand designer selling playfulness. This is an engineer,
+   so the structure stays disciplined — same five pages, same hierarchy, same
+   honest labels — and only the surface gets loud. The marks are kept to the
+   hero rather than scattered across every section, and the project artwork
+   stays as-is because six unique illustrations already carry the personality
+   the reference gets from stickers.
+
+   Note: the palette here is the genre's own triad. An alternative sampled from
+   Jerome's six illustrations (cream / deep teal / terracotta / gold) was built
+   and rejected in favour of this one — it read calmer but lost the punch the
+   whole style exists for.
    ========================================================================== */
 
 :root {
-  /* Ground */
-  --bg-deep: #eef1f8;
-  --bg-raised: rgba(255, 255, 255, 0.62);
-  --bg-panel: rgba(255, 255, 255, 0.45);
+  /* Ground — warm white, not pure #fff, so black outlines read as ink on paper */
+  --bg-deep: #fffdf7;
+  --bg-raised: #ffffff;
+  --bg-panel: #ffffff;
+
+  /* The triad, at full saturation. Rule 3. */
+  --blue: #2f45e0;
+  --blue-deep: #1e2fb8;
+  --yellow: #ffc93c;
+  --coral: #ff5a45;
+  --mint: #3fbf87;
+  --cyan: #36a7bb;
+
+  /* Ink. One black, used for every outline, every shadow, all body copy. */
+  --ink: #111111;
 
   /* Typography */
-  --font-display: var(--font-serif, Georgia, "Times New Roman", serif);
+  --font-display: var(--font-heavy, "Arial Black", sans-serif);
+  --font-pixel-face: var(--font-pixel, "Courier New", monospace);
+  --pixel-weight: 400;
+  --pixel-tracking: 0.012em;
 
-  /* Text ramp — 100 / 72 / 55 / 42 */
-  --text-primary: #131b2c;
-  --text-secondary: rgba(19, 27, 44, 0.72);
-  --text-muted: rgba(19, 27, 44, 0.58);
-  --text-faint: rgba(19, 27, 44, 0.45);
+  /* Text ramp. Far less laddering than the glass build needed: on flat white
+     with black outlines, mid-greys look washed out rather than quiet. */
+  --text-primary: #111111;
+  --text-secondary: #33383f;
+  --text-muted: #5b626c;
+  --text-faint: #7a828d;
 
-  /* Accent, off the headshot. Token names unchanged from earlier builds so
-     existing rules reskin without being rewritten. */
-  --accent-warm: #3a72b8;
-  --accent-warm-soft: #5a91d4;
-  --accent-warm-deep: #27548c;
-  --accent-cool: #7b8fb0;
+  /* Accent aliases kept so existing rules reskin without being rewritten */
+  --accent-warm: var(--blue);
+  --accent-warm-soft: #5566ea;
+  --accent-warm-deep: var(--blue-deep);
+  --accent-cool: var(--coral);
+  --stone: #5b626c;
+  --stone-soft: #7a828d;
 
-  /* The near-black used for the one filled control, as in the reference */
-  --ink: #141c2e;
+  /* Rules 1 and 2 — the two values the whole system hangs on */
+  --line: 3px;
+  --outline: var(--line) solid var(--ink);
+  --shadow: 5px 5px 0 var(--ink);
+  --shadow-lg: 8px 8px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
 
-  --stone: #7b8aa3;
-  --stone-soft: #9aa8bf;
+  --radius: 18px;
+  --radius-sm: 12px;
 
-  /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.62);
-  --glass-bg-hover: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-border-hover: #fff;
-  --glass-blur: blur(20px) saturate(160%);
-  /* Blue-grey shadow, never black: black on light glass reads as dirt. */
-  --glass-shadow:
-    0 10px 34px rgba(35, 60, 110, 0.09),
-    0 2px 8px rgba(35, 60, 110, 0.05);
-  --radius: 22px;
-  --radius-sm: 14px;
+  --hairline: rgba(17, 17, 17, 0.14);
+  --hairline-strong: var(--ink);
 
-  --hairline: rgba(19, 27, 44, 0.1);
-  --hairline-strong: rgba(19, 27, 44, 0.18);
+  --accent-tint: rgba(47, 69, 224, 0.08);
+  --accent-tint-strong: rgba(47, 69, 224, 0.16);
+  --accent-line: var(--ink);
 
-  --accent-tint: rgba(58, 114, 184, 0.08);
-  --accent-tint-strong: rgba(58, 114, 184, 0.16);
-  --accent-line: rgba(58, 114, 184, 0.32);
-
-  /* Status colours, tuned for contrast on a near-white ground */
-  --status-live: #1d7a55;
-  --status-live-line: rgba(29, 122, 85, 0.32);
-  --status-live-wash: rgba(29, 122, 85, 0.09);
-  --status-award: #8a6320;
-  --status-award-line: rgba(138, 99, 32, 0.32);
-  --status-award-wash: rgba(138, 99, 32, 0.09);
-  --status-build: #3a72b8;
-  --status-build-line: rgba(58, 114, 184, 0.3);
-  --status-build-wash: rgba(58, 114, 184, 0.08);
+  /* Status colours become solid badge fills rather than washes */
+  --status-live: #0f6b45;
+  --status-live-line: var(--ink);
+  --status-live-wash: #b8f0d4;
+  --status-award: #7a4a06;
+  --status-award-line: var(--ink);
+  --status-award-wash: var(--yellow);
+  --status-build: var(--blue-deep);
+  --status-build-line: var(--ink);
+  --status-build-wash: #c9d0ff;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-duration: 320ms;
+  --ease-duration: 180ms;
 
   --shell: 78rem;
 
@@ -132,27 +147,7 @@ body {
    stock, and this needs no attribution.
    -------------------------------------------------------------------------- */
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(46rem 34rem at 4% -8%, rgba(126, 168, 224, 0.72), transparent 60%),
-    radial-gradient(40rem 30rem at 100% 2%, rgba(158, 166, 236, 0.62), transparent 62%),
-    radial-gradient(42rem 32rem at 96% 54%, rgba(132, 182, 230, 0.52), transparent 64%),
-    radial-gradient(52rem 38rem at 10% 96%, rgba(142, 172, 224, 0.55), transparent 64%),
-    linear-gradient(180deg, #eef1f9 0%, #e8ecf6 50%, #e4e9f4 100%);
-}
 
-img,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
 
 button,
 input,
@@ -177,68 +172,45 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   Glass
+   .panel — the one surface in the system
 
-   A global utility, not a per-module rule: backdrop-filter has to sit on the
-   element itself, and repeating this in nine CSS modules is how a recipe
-   drifts. Components compose it: `className={`glass ${styles.x}`}`.
+   Was `.glass`. Renamed because it no longer describes anything: there is no
+   blur, no transparency and no light. Rules 1 and 2 of the decomposition live
+   here, so every card, badge, frame and button inherits the same outline and
+   the same hard shadow from a single place.
    -------------------------------------------------------------------------- */
 
-.glass {
+.panel {
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: var(--bg-raised);
+  border: var(--outline);
   border-radius: var(--radius);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow);
 }
 
-/* Point 3: the lit top edge. A gradient border-image would clip the backdrop
-   filter, so the highlight is a pseudo-element hairline instead. */
-.glass::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  border-radius: var(--radius) var(--radius) 0 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.95) 20%,
-    rgba(255, 255, 255, 0.95) 80%,
-    transparent
-  );
-  pointer-events: none;
+/* Nested panels drop to the small shadow. Two full-size hard shadows stacked
+   inside each other read as a printing error rather than depth. */
+.panel .panel {
+  box-shadow: var(--shadow-sm);
 }
 
-/* Point 4: a panel nested inside another panel steps down in alpha, so the
-   two levels stay distinguishable instead of merging into one flat sheet. */
-.glass .glass {
-  background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 4px 16px rgba(35, 60, 110, 0.06);
-}
+/* Rule 4: the tilt. Applied by hand where it helps rather than globally —
+   everything at an angle is as monotonous as everything square. */
+.tilt-l { transform: rotate(-1.6deg); }
+.tilt-r { transform: rotate(1.6deg); }
 
-.glassHover {
+/* The lift. Moves toward the light source so the shadow grows, which is what
+   a sticker peeling off the page actually does. */
+.panelHover {
   transition:
-    background-color var(--ease-duration) var(--ease-out),
-    border-color var(--ease-duration) var(--ease-out);
+    transform var(--ease-duration) var(--ease-out),
+    box-shadow var(--ease-duration) var(--ease-out);
 }
 
-.glassHover:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
-}
-
-/*
- * Safari on iOS drops backdrop-filter inside an already-filtered ancestor, and
- * some Firefox builds gate it behind a flag. Without blur, a 62%-white panel
- * over a pale ground still reads — but raise it to near-opaque so text keeps
- * its contrast rather than sitting on whatever pool happens to be behind it.
- */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass {
-    background: rgba(255, 255, 255, 0.92);
+@media (hover: hover) {
+  .panelHover:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-lg);
   }
 }
 
@@ -255,4 +227,53 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Section tones
+
+   Rule 3: colour blocks that sit against each other. A section opts in and
+   everything inside it reskins, rather than each component learning about
+   colour. `ink` and `blue` invert the text ramp; `paper` is the default.
+   -------------------------------------------------------------------------- */
+
+[data-tone="blue"] {
+  --bg-deep: var(--blue);
+  --bg-raised: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.86);
+  --text-muted: rgba(255, 255, 255, 0.72);
+  --text-faint: rgba(255, 255, 255, 0.6);
+  --accent-warm: var(--yellow);
+  background: var(--blue);
+  color: #fff;
+}
+
+[data-tone="yellow"] {
+  --bg-deep: var(--yellow);
+  --bg-raised: #ffffff;
+  background: var(--yellow);
+}
+
+/*
+ * Panels inside a coloured band stay white with a black outline — that
+ * contrast is what makes the band read as a block rather than a tint.
+ *
+ * The text ramp has to be restored here as well, not just the colour. The
+ * band inverts --text-faint and --text-muted to white so its own copy reads
+ * on blue; without putting them back, anything inside the white panel that
+ * uses them (the footer eyebrow, the footer link row) renders white on white
+ * and disappears.
+ */
+[data-tone="blue"] .panel,
+[data-tone="yellow"] .panel {
+  background: #fff;
+  color: var(--ink);
+
+  --text-primary: #111111;
+  --text-secondary: #33383f;
+  --text-muted: #5b626c;
+  --text-faint: #7a828d;
+  --accent-warm: var(--blue);
 }

@@ -1,0 +1,313 @@
+/* ==========================================================================
+   Project cards — stickers
+
+   Outline and hard shadow come from `.panel` in globals.css. What is left here
+   is the grid, the lift, and the one thing this build adds over the reference:
+   each card carries its own accent colour, so six cards in a row read as six
+   things rather than one thing repeated.
+   ========================================================================== */
+
+/*
+ * Two columns, declared rather than auto-fit.
+ *
+ * `auto-fit` picks the column count from the container width, so any item count
+ * that does not divide by it strands a half-empty last row — with four cards it
+ * chose three and left one marooned. Both sets here are even (four on home, six
+ * on /work), so fixing the count at two guarantees full rows and gives each
+ * screenshot enough width to be legible.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 60rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+
+  /* The float. Kept small: a card that leaps reads as a toy, and this sits
+     next to employment history. */
+  transition:
+    transform 420ms var(--ease-out),
+    box-shadow 420ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  /* Toward the light, so the hard shadow grows — a sticker lifting off the
+     page. The soft blurred lift the glass build used has no place in a system
+     with no blur anywhere else in it. */
+  .card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/*
+ * The pointer-tracking sheen from the glass build is gone.
+ *
+ * It simulated a specular bloom on a curved translucent surface. Nothing here
+ * is translucent or curved, so the effect had nothing to reflect off and read
+ * as a stray white smear moving across flat colour.
+ */
+
+/* --- image ---------------------------------------------------------------- */
+
+.frame {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  margin: clamp(0.6rem, 1.2vw, 0.85rem);
+  border-radius: var(--radius-sm);
+  /* The per-card accent shows as the mat behind the artwork */
+  background: var(--card-accent, var(--blue));
+}
+
+.shot {
+  display: block;
+  width: 100%;
+  /* `height: auto` is load-bearing. The <img> carries width/height attributes
+     so the browser can reserve space before the file arrives, but that sets a
+     used height of 600px, and `aspect-ratio` only applies when height is auto.
+     Without this the frame renders 600px tall and crops the screenshot to a
+     narrow slice. */
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: 50% 0;
+
+  transition: transform 420ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .card:hover .shot {
+    transform: scale(1.04);
+  }
+}
+
+/* --- fallback tile, for a project added without artwork ------------------ */
+
+.tile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background: var(--card-accent, var(--blue));
+}
+
+.tileMark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  color: var(--ink);
+}
+
+/* --- body ---------------------------------------------------------------- */
+
+.body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0 clamp(1.1rem, 2.2vw, 1.5rem) clamp(1.2rem, 2.4vw, 1.6rem);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.index {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex: none;
+
+  background: var(--ink);
+  color: #fff;
+  border-radius: 50%;
+
+  font-family: var(--font-pixel-face);
+  font-size: 0.78rem;
+}
+
+.name {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.nameLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* The whole card becomes the hit area for the first link, but only the name
+   shows focus, so keyboard users still see exactly what they are activating. */
+.nameLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.nameLink:hover,
+.nameLink:focus-visible {
+  color: var(--blue);
+  outline: none;
+}
+
+.year {
+  font-family: var(--font-pixel-face);
+  font-size: 0.85rem;
+  letter-spacing: var(--pixel-tracking);
+  color: var(--text-muted);
+}
+
+.context {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.line {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* --- nested glass: tags and links ---------------------------------------- */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: 0.26rem 0.62rem;
+  border-radius: 999px;
+  border-width: 2px;
+  box-shadow: none;
+
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  /* Above the card-wide hit area, so a second or third link is still
+     independently clickable. */
+  position: relative;
+  z-index: 4;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.42rem 0.75rem;
+  border-radius: 999px;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--card-accent, var(--blue));
+  border-width: 2px;
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform var(--ease-duration) var(--ease-out),
+    box-shadow var(--ease-duration) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .link:hover,
+  .link:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .shot,
+  .link,
+  .sheen {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card:hover .shot {
+    transform: none;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   Per-card accent
+
+   Rule 3 applied at card level. The colour cycles so no two adjacent cards in
+   a two-column grid share one, and it drives the image mat and the link chips.
+   -------------------------------------------------------------------------- */
+
+.card:nth-child(4n + 1) { --card-accent: var(--yellow); }
+.card:nth-child(4n + 2) { --card-accent: #c9d0ff; }
+.card:nth-child(4n + 3) { --card-accent: #ffd9d3; }
+.card:nth-child(4n + 4) { --card-accent: #bdf0d8; }
+
+/* Rule 4: alternating tilt, small enough to read as hand-placed rather than
+   broken. Removed on hover so the lift is a clean vertical move. */
+@media (min-width: 60rem) and (hover: hover) {
+  .card:nth-child(odd) { transform: rotate(-0.5deg); }
+  .card:nth-child(even) { transform: rotate(0.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:nth-child(odd),
+  .card:nth-child(even) {
+    transform: none;
+  }
+}

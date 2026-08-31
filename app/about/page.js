@@ -75,7 +75,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <figure className={`glass ${styles.portrait}`}>
+        <figure className={`panel ${styles.portrait}`}>
           <img
             className={styles.portraitImg}
             src="/img/jerome-cutout-800.webp"
@@ -93,7 +93,7 @@ export default function AboutPage() {
         <SectionTitle index="02">What I work on</SectionTitle>
         <ul className={styles.focus}>
           {FOCUS.map((item) => (
-            <li className={`glass ${styles.focusItem}`} key={item.title}>
+            <li className={`panel ${styles.focusItem}`} key={item.title}>
               <h3 className={styles.focusTitle}>{item.title}</h3>
               <p className={styles.focusBody}>{item.body}</p>
             </li>

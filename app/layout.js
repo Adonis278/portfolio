@@ -1,4 +1,4 @@
-import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Inter, JetBrains_Mono, Fraunces, VT323, Archivo_Black } from "next/font/google";
 import SiteNav from "@/components/ui/SiteNav";
 import SiteFooter from "@/components/ui/SiteFooter";
 import FirebaseAnalytics from "@/components/analytics/FirebaseAnalytics";
@@ -37,6 +37,40 @@ const display = Fraunces({
   variable: "--font-serif",
 });
 
+/**
+ * The retro display face.
+ *
+ * VT323 is a CRT terminal font, not an arcade font, and that distinction is the
+ * whole reason it is here. A pixel face reads as either "computing history" or
+ * "video game" depending on which one you pick, and for someone applying to AI
+ * and cloud engineering roles the first is an asset and the second is a
+ * liability. It carries one weight only, so anything using it must set
+ * font-weight 400 — asking for 700 makes the browser synthesise a fake bold
+ * that smears the pixel grid.
+ */
+const pixel = VT323({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-pixel",
+});
+
+/**
+ * The display face for the neo-brutalist build.
+ *
+ * Rule 6 needs a single very heavy weight — the reference sets headlines in
+ * something with no light cut at all. Archivo Black ships exactly one weight
+ * (900) and nothing else, which is the point: there is no way to accidentally
+ * set a thin headline in it. Fraunces stays loaded for the résumé page, which
+ * is a document rather than a poster and should not shout.
+ */
+const heavy = Archivo_Black({
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
+  variable: "--font-heavy",
+});
+
 const fullName = `${identity.firstName} ${identity.lastName}`;
 
 export const metadata = {
@@ -56,7 +90,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable} ${display.variable}`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable} ${display.variable} ${pixel.variable} ${heavy.variable}`}>
       <body>
         <SiteNav />
         {children}

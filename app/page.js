@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Hero from "@/components/Hero/Hero";
-import ProjectRows from "@/components/work/ProjectRows";
+import ProjectCards from "@/components/work/ProjectCards";
 import { SectionTitle, pageStyles } from "@/components/ui/Page";
 import { homeWork } from "@/lib/featured";
 import styles from "./home.module.css";
@@ -23,7 +23,7 @@ export default function Page() {
 
       <section className={pageStyles.shell} id="featured">
         <SectionTitle index="01">Selected work</SectionTitle>
-        <ProjectRows items={homeWork} />
+        <ProjectCards items={homeWork} />
 
         <div className={styles.more}>
           <Link className={styles.moreLink} href="/work">

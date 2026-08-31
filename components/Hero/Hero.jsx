@@ -1,104 +1,162 @@
 import { identity, resume } from "@/lib/site";
+import {
+  Star,
+  Squiggle,
+  Spark,
+  Arrow,
+  Bolt,
+  Loop,
+  CodeIcon,
+  CloudIcon,
+  AgentIcon,
+  TerminalIcon,
+} from "@/components/ui/Doodles";
 import styles from "./Hero.module.css";
 
 /**
- * The editorial masthead.
+ * The hero.
  *
- * This replaces VideoIntro. The video is not deleted — it is simply no longer
- * the first thing a reviewer meets. A 21MB autoplaying clip cost several
- * seconds before anything legible appeared; the headshot is 169KB and the name
- * is readable on the first paint.
+ * Both references build the same thing: a portrait with decoration orbiting
+ * it. The decoration is doing real work — it fills the space a cut-out
+ * portrait leaves around itself, and it lets the page say what he does without
+ * spending another paragraph saying it.
  *
- * Server component on purpose. Nothing here needs client JavaScript, so the
- * whole hero ships as HTML and the entrance animation runs from CSS.
+ * Two layers around the photo:
+ *   - four icon stickers, each naming one thing he builds (agents, cloud,
+ *     code, shipping). These mean something.
+ *   - loose marks (star, bolt, loop, arrow, spark) that mean nothing and are
+ *     there purely for energy, which is rule 5 of the decomposition.
+ *
+ * All of it is aria-hidden, and the loose marks sit behind the portrait in the
+ * stacking order so nothing can intercept a click or get read aloud between
+ * his name and his job title.
+ *
+ * Server component: nothing here needs client JavaScript.
  */
 
-/** Employers, in reverse chronological order. The strongest evidence he has. */
 const CREDENTIALS = [
   { name: "Amazon Web Services", year: "2025" },
   { name: "Bank of America", year: "2023" },
   { name: "Ernst & Young", year: "2022" },
 ];
 
-export default function Hero({ nextSectionId = "work" }) {
+/** The four icon stickers, with the colour and corner each one takes. */
+const ORBIT = [
+  { key: "agent", Icon: AgentIcon, label: "Agents", tone: "blue", seat: "tl" },
+  { key: "cloud", Icon: CloudIcon, label: "Cloud", tone: "yellow", seat: "tr" },
+  { key: "code", Icon: CodeIcon, label: "Code", tone: "coral", seat: "bl" },
+  { key: "ship", Icon: TerminalIcon, label: "Ship", tone: "mint", seat: "br" },
+];
+
+export default function Hero({ nextSectionId = "featured" }) {
   return (
     <header className={styles.hero}>
       <div className={styles.shell}>
-        {/* The meta row that used to sit here is gone: with a sticky nav
-            directly above, a second horizontal band of small caps made the top
-            of the page feel like chrome before any content. */}
         <div className={styles.masthead}>
-          <div className={styles.nameBlock}>
-            <h1 className={`${styles.name} ${styles.reveal} ${styles.d1}`}>
-              <span className={styles.nameLine}>{identity.firstName}</span>
-              <span className={`${styles.nameLine} ${styles.nameAccent}`}>
-                {identity.lastName}
+          <div className={styles.copy}>
+            <p className={`panel ${styles.eyebrow}`}>
+              <Spark className={styles.eyebrowIcon} aria-hidden="true" />
+              Hi, I&rsquo;m Jerome
+            </p>
+
+            <h1 className={styles.name}>
+              <span className={styles.nameLine}>I build agents</span>
+              <span className={styles.nameLine}>
+                that{" "}
+                <span className={styles.nameAccent}>
+                  ship
+                  <Squiggle className={styles.underline} aria-hidden="true" />
+                </span>
               </span>
             </h1>
 
-            <div className={`${styles.reveal} ${styles.d2}`}>
-              <div className={styles.rule} />
-              <p className={styles.role}>{identity.role}</p>
-              <p className={styles.subtitle}>{identity.subtitle}</p>
+            <p className={styles.role}>{identity.role}</p>
+            <p className={styles.subtitle}>{identity.subtitle}</p>
 
-              <div className={styles.actions}>
-                <a className={styles.primary} href={resume.page}>
-                  View résumé
-                </a>
-                <a className={styles.secondary} href={`#${nextSectionId}`}>
-                  See the work
-                </a>
-              </div>
-
-              <ul className={styles.links}>
-                {identity.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      className={styles.link}
-                      href={link.href}
-                      target={link.href.startsWith("http") ? "_blank" : undefined}
-                      rel={
-                        link.href.startsWith("http")
-                          ? "noreferrer noopener"
-                          : undefined
-                      }
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.actions}>
+              <a
+                className={`panel panelHover ${styles.primary}`}
+                href={`#${nextSectionId}`}
+              >
+                See the work
+              </a>
+              <a
+                className={`panel panelHover ${styles.secondary}`}
+                href={resume.page}
+              >
+                Résumé
+              </a>
             </div>
+
+            <ul className={styles.links}>
+              {identity.links.map((link) => (
+                <li key={link.label}>
+                  <a
+                    className={styles.link}
+                    href={link.href}
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.href.startsWith("http")
+                        ? "noreferrer noopener"
+                        : undefined
+                    }
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className={`${styles.portraitCol} ${styles.reveal} ${styles.d3}`}>
-            {/*
-              The cutout has no background, so it is not framed. A soft radial
-              pool sits behind it and the figure stands free on the ground —
-              a boxed portrait would reintroduce the hard edge the transparent
-              PNG exists to remove.
+          <div className={styles.portraitCol}>
+            {/* Loose marks — behind the portrait, purely decorative. */}
+            <div className={styles.marks} aria-hidden="true">
+              <Star className={`${styles.mark} ${styles.markStar}`} />
+              <Bolt className={`${styles.mark} ${styles.markBolt}`} />
+              <Loop className={`${styles.mark} ${styles.markLoop}`} />
+              <Arrow className={`${styles.mark} ${styles.markArrow}`} />
+              <Spark className={`${styles.mark} ${styles.markSpark}`} />
+            </div>
 
+            {/* The colour block the cut-out stands on. Rule 3. */}
+            <div className={styles.blob} aria-hidden="true" />
+
+            {/*
               Plain <img>, not next/image: the site is `output: "export"`, so
-              the Image Optimization API is unavailable. Sizes are generated at
-              build time instead. WebP because alpha in PNG cost 2.1MB here and
+              the Image Optimization API is unavailable and sizes are generated
+              at build time instead. WebP because alpha in PNG cost 2.1MB and
               the same cutout in WebP is 107KB.
             */}
-            <div className={styles.glow} aria-hidden="true" />
             <img
               className={styles.cutout}
               src="/img/jerome-cutout-800.webp"
               srcSet="/img/jerome-cutout-480.webp 480w, /img/jerome-cutout-800.webp 800w, /img/jerome-cutout-1254.webp 1254w"
-              sizes="(max-width: 60rem) 18rem, 32vw"
+              sizes="(max-width: 60rem) 20rem, 34vw"
               width={800}
               height={800}
               alt="Jerome Adonis"
               fetchPriority="high"
               decoding="async"
             />
+
+            {/* Icon stickers — these name real things, so they sit in front. */}
+            <ul className={styles.orbit} aria-hidden="true">
+              {ORBIT.map(({ key, Icon, label, tone, seat }) => (
+                <li
+                  className={`panel ${styles.chip}`}
+                  data-chip={tone}
+                  data-seat={seat}
+                  key={key}
+                >
+                  <Icon className={styles.chipIcon} />
+                  <span className={styles.chipLabel}>{label}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        <div className={`glass ${styles.strip}`}>
+        <div className={`panel ${styles.strip}`}>
           <span className={styles.stripLabel}>Built at</span>
           {CREDENTIALS.map((item) => (
             <span key={item.name} className={styles.stripItem}>

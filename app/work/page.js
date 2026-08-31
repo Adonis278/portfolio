@@ -1,4 +1,4 @@
-import ProjectRows from "@/components/work/ProjectRows";
+import ProjectCards from "@/components/work/ProjectCards";
 import { PageHeader, SectionTitle, pageStyles } from "@/components/ui/Page";
 import { featuredWork, otherWork } from "@/lib/featured";
 import styles from "./work-index.module.css";
@@ -26,11 +26,11 @@ export default function WorkPage() {
         intro="Every project below is real. These six are the ones that show the most about how I build agentic systems and ship software, so they are the ones with the detail."
       />
 
-      <ProjectRows items={featuredWork} />
+      <ProjectCards items={featuredWork} />
 
       <section className={pageStyles.block}>
         <SectionTitle index="02">Also built</SectionTitle>
-        <ul className={`glass ${styles.list}`}>
+        <ul className={`panel ${styles.list}`}>
           {otherWork.map((item) => (
             <li className={styles.item} key={item.name}>
               <span className={styles.name}>{item.name}</span>

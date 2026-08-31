@@ -24,3 +24,10 @@ resume-latex/*.out
 # Preview captures and résumé working copies — not part of the site
 /redesign-preview/
 /resume-backup/
+
+# Preview captures
+/retro-preview/
+/cards-preview/
+/final-art-preview/
+/unique-art/
+/brutal-preview/

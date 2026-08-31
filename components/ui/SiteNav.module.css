@@ -1,10 +1,5 @@
 /* ==========================================================================
-   Top navigation — floating pill
-
-   Point 5 of the decomposition. The reference detaches the nav from the top
-   edge and floats it as a rounded bar, which is what makes the ground read as
-   a continuous surface running underneath the whole page rather than starting
-   below a header.
+   Top navigation — outlined pill
    ========================================================================== */
 
 .bar {
@@ -12,43 +7,51 @@
   top: clamp(0.6rem, 1.6vh, 1.1rem);
   z-index: 30;
 
-  /* Same formula as the page shell so the pill lines up with the content
-     edges rather than floating wider than everything beneath it. */
   width: min(100% - clamp(2rem, 8vw, 8rem), var(--shell));
   margin: clamp(0.6rem, 1.6vh, 1.1rem) auto 0;
 
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: #fff;
+  border: var(--outline);
   border-radius: 999px;
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow);
 }
 
 .inner {
   display: flex;
   align-items: center;
   gap: clamp(0.75rem, 3vw, 2rem);
-  padding: 0.5rem 0.5rem 0.5rem clamp(1rem, 2.5vw, 1.5rem);
+  padding: 0.45rem 0.45rem 0.45rem clamp(1rem, 2.5vw, 1.5rem);
 }
 
 .wordmark {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
   font-family: var(--font-display);
-  font-variation-settings: "opsz" 24, "SOFT" 0, "WONK" 0;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.022em;
+  font-weight: 400;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--ink);
   white-space: nowrap;
+}
+
+/* A filled dot standing in for a logo mark, as in both references */
+.wordmark::before {
+  content: "";
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--yellow);
 }
 
 .list {
   display: flex;
   align-items: center;
   gap: 0.15rem;
-
   margin: 0 auto;
   padding: 0;
   list-style: none;
@@ -56,16 +59,15 @@
 
 .tab {
   display: inline-block;
-  padding: 0.5rem 0.9rem;
+  padding: 0.45rem 0.85rem;
 
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
   color: var(--text-muted);
 
+  border: 2px solid transparent;
   border-radius: 999px;
   transition:
     color var(--ease-duration) var(--ease-out),
@@ -74,47 +76,87 @@
 
 .tab:hover,
 .tab:focus-visible {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink);
   outline: none;
 }
 
-/* The active tab is a filled pill, as in the reference. It is the only thing
-   in the bar with a background, so there is never a question which page
-   you are on. */
+/* The active tab is the only outlined thing in the bar, so there is never a
+   question which page you are on. */
 .tabActive,
 .tabActive:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 8px rgba(35, 60, 110, 0.1);
+  color: var(--ink);
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+/* --- social marks -------------------------------------------------------- */
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: none;
+}
+
+.socialLink {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+
+  transition:
+    background-color var(--ease-duration) var(--ease-out),
+    transform var(--ease-duration) var(--ease-out),
+    box-shadow var(--ease-duration) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .socialLink:hover,
+  .socialLink:focus-visible {
+    background: var(--yellow);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
+}
+
+.socialIcon {
+  width: 1.05rem;
+  height: 1.05rem;
 }
 
 .cta {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.6rem 1.1rem;
+  padding: 0.55rem 1.1rem;
 
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
 
-  /* Point 6: the single near-black filled control. */
   color: #fff;
-  background: var(--ink);
+  background: var(--coral);
+  border: var(--outline);
   border-radius: 999px;
-  transition: background-color var(--ease-duration) var(--ease-out);
+  transition:
+    transform var(--ease-duration) var(--ease-out),
+    box-shadow var(--ease-duration) var(--ease-out);
 }
 
-.cta:hover,
-.cta:focus-visible {
-  background: #26334d;
-  outline: none;
+@media (hover: hover) {
+  .cta:hover,
+  .cta:focus-visible {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+  }
 }
 
 @media (max-width: 52rem) {
@@ -125,7 +167,7 @@
   .inner {
     flex-wrap: wrap;
     gap: 0.5rem 1rem;
-    padding: 0.6rem 0.6rem 0.6rem 1rem;
+    padding: 0.6rem;
   }
 
   /* The tab row drops to its own line and scrolls sideways rather than
@@ -143,7 +185,11 @@
     display: none;
   }
 
-  .cta {
+  .social {
     margin-left: auto;
+  }
+
+  .cta {
+    margin-left: 0;
   }
 }

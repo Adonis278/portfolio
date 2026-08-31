@@ -89,11 +89,10 @@
 }
 
 .awardValue {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 48, "SOFT" 0, "WONK" 0;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-family: var(--font-pixel-face);
+  font-size: clamp(2rem, 3.9vw, 2.7rem);
+  font-weight: var(--pixel-weight);
+  letter-spacing: var(--pixel-tracking);
   color: var(--accent-warm);
 }
 

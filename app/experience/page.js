@@ -26,7 +26,7 @@ export default function ExperiencePage() {
         intro="Three summers of shipping software inside large engineering organisations, and the roles I run outside them."
       />
 
-      <ol className={`glass ${styles.jobs}`}>
+      <ol className={`panel ${styles.jobs}`}>
         {experience.map((job) => (
           <li className={styles.job} key={job.company}>
             <div>
@@ -49,7 +49,7 @@ export default function ExperiencePage() {
         <SectionTitle index="02">Recognition</SectionTitle>
         <ul className={styles.awards}>
           {recognition.map((item) => (
-            <li className={`glass ${styles.award}`} key={item.label}>
+            <li className={`panel ${styles.award}`} key={item.label}>
               <span className={styles.awardValue}>{item.value}</span>
               <span className={styles.awardLabel}>{item.label}</span>
               <span className={styles.awardYear}>{item.year}</span>
@@ -60,7 +60,7 @@ export default function ExperiencePage() {
 
       <section className={pageStyles.block}>
         <SectionTitle index="03">Leadership</SectionTitle>
-        <ul className={`glass ${styles.leadership}`}>
+        <ul className={`panel ${styles.leadership}`}>
           {leadership.map((item) => (
             <li className={styles.lead} key={item.org}>
               <div>

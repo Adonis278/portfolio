@@ -29,7 +29,7 @@ export default function ResearchPage() {
 
       <div className={styles.grid}>
         {research.map((item) => (
-          <article className={`glass ${styles.study}`} key={item.id}>
+          <article className={`panel ${styles.study}`} key={item.id}>
             {item.award ? (
               <span className={styles.award}>{item.award}</span>
             ) : null}

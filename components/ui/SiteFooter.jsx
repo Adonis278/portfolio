@@ -12,9 +12,9 @@ import styles from "./SiteFooter.module.css";
  */
 export default function SiteFooter() {
   return (
-    <footer className={styles.footer} id="contact">
+    <footer className={styles.footer} id="contact" data-tone="blue">
       <div className={styles.shell}>
-        <div className={`glass ${styles.top}`}>
+        <div className={`panel ${styles.top}`}>
           <div>
             <p className={styles.eyebrow}>Get in touch</p>
             <a className={styles.email} href={`mailto:${identity.email}`}>

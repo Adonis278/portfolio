@@ -1,15 +1,11 @@
 /* ==========================================================================
-   Hero — editorial masthead
-
-   A masthead in a high-contrast variable serif, beside a background-free
-   cutout standing in a pool of light. The name is two flat colours, never a
-   gradient fill: that remains the loudest tell of a generated page.
+   Hero — the poster spread
    ========================================================================== */
 
 .hero {
   position: relative;
-  padding-block: clamp(1.5rem, 4vh, 2.5rem) clamp(1rem, 2.5vh, 1.75rem);
-  background: var(--bg-deep);
+  overflow: hidden;
+  padding-block: clamp(1.5rem, 4vh, 3rem) clamp(2.5rem, 6vh, 4rem);
 }
 
 .shell {
@@ -17,57 +13,53 @@
   margin-inline: auto;
 }
 
-/* --- meta row ----------------------------------------------------------- */
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem 2rem;
-
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--hairline);
-
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.metaRight {
-  color: var(--text-faint);
-}
-
-/* --- masthead ----------------------------------------------------------- */
-
-/*
- * Asymmetric on purpose. The type column is wider than the portrait column and
- * they share a baseline at the top, so the name reads first and the photograph
- * anchors the right edge rather than competing for the centre.
- */
 .masthead {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
 }
 
-.nameBlock {
+/* --- copy ---------------------------------------------------------------- */
+
+.copy {
   min-width: 0;
+}
+
+/* A sticker, not a label: outlined and tilted so the page opens with the
+   system's own vocabulary rather than a line of small caps. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.4rem 0.9rem;
+  margin-bottom: clamp(1rem, 2.5vw, 1.4rem);
+  transform: rotate(-1.6deg);
+
+  background: var(--yellow);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.eyebrowIcon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--ink);
 }
 
 .name {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 900;
-  /* opsz is what makes the thick/thin contrast open up at display size */
-  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
-  font-size: clamp(3.4rem, 11.5vw, 9.5rem);
-  line-height: 0.84;
+  font-weight: 400; /* Archivo Black ships one weight; 700 would synthesise */
+  font-size: clamp(2.6rem, 7.2vw, 5.2rem);
+  line-height: 0.94;
   letter-spacing: -0.035em;
-  color: var(--text-primary);
+  color: var(--ink);
   text-wrap: balance;
 }
 
@@ -75,118 +67,98 @@
   display: block;
 }
 
-/* The surname carries the accent. One coloured word, not a gradient across
-   the whole lockup. */
+/* Rule 6: one word in colour, with a drawn underline rather than a border. */
 .nameAccent {
-  color: var(--accent-warm);
+  position: relative;
+  display: inline-block;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+/*
+ * The drawn underline.
+ *
+ * `height: auto` was the bug: the SVG is 40x14, so at 104% of the word's width
+ * it resolved to roughly 40px tall and sat over the letters instead of under
+ * them. Height is pinned in em and the width is allowed to stretch — the
+ * squiggle is decorative, so distorting its aspect ratio costs nothing.
+ */
+.underline {
+  position: absolute;
+  left: 0;
+  bottom: -0.26em;
+  width: 100%;
+  height: 0.2em;
+  color: var(--coral);
+  pointer-events: none;
 }
 
 .role {
-  color: var(--text-primary);
-}
-
-.rule {
-  height: 1px;
-  margin: clamp(1.6rem, 4vw, 2.4rem) 0 clamp(1.1rem, 2.5vw, 1.6rem);
-  background: var(--hairline-strong);
-}
-
-.role {
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 24, "SOFT" 0, "WONK" 0;
-  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
-  font-weight: 600;
-  line-height: 1.24;
-  letter-spacing: -0.018em;
-  color: var(--text-primary);
+  margin-top: clamp(1.2rem, 3vw, 1.8rem);
+  font-size: clamp(0.98rem, 1.3vw, 1.1rem);
+  font-weight: 700;
+  color: var(--blue);
 }
 
 .subtitle {
   max-width: 34rem;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   font-size: clamp(0.94rem, 1.05vw, 1.02rem);
-  line-height: 1.66;
+  line-height: 1.62;
   color: var(--text-secondary);
   text-wrap: pretty;
 }
 
-/* --- actions ------------------------------------------------------------ */
+/* --- actions ------------------------------------------------------------- */
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-  margin-top: clamp(1.6rem, 3.5vw, 2.2rem);
+  margin-top: clamp(1.4rem, 3vw, 2rem);
 }
 
 .primary,
 .secondary {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.72rem 1.3rem;
-
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: none;
-
+  padding: 0.72rem 1.4rem;
   border-radius: 999px;
-  border: 1px solid var(--accent-line);
-  transition:
-    background-color var(--ease-duration) var(--ease-out),
-    color var(--ease-duration) var(--ease-out);
+
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .primary {
+  background: var(--coral);
   color: #fff;
-  font-weight: 500;
-  background: var(--ink);
-  border-color: transparent;
-}
-
-.primary:hover,
-.primary:focus-visible {
-  background: #26334d;
-  outline: none;
 }
 
 .secondary {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow);
-}
-
-.secondary:hover,
-.secondary:focus-visible {
   background: #fff;
-  outline: none;
+  color: var(--ink);
 }
-
-/* --- links -------------------------------------------------------------- */
 
 .links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: clamp(1.5rem, 3vw, 2rem);
+  gap: 1.2rem;
+  margin: clamp(1.2rem, 2.5vw, 1.6rem) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .link {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
   text-decoration: none;
+  color: var(--text-muted);
   padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid transparent;
   transition:
     color var(--ease-duration) var(--ease-out),
     border-color var(--ease-duration) var(--ease-out);
@@ -194,61 +166,167 @@
 
 .link:hover,
 .link:focus-visible {
-  color: var(--text-primary);
-  border-bottom-color: var(--accent-warm);
+  color: var(--ink);
+  border-bottom-color: var(--coral);
   outline: none;
 }
 
-/* --- portrait ----------------------------------------------------------- */
+/* --- portrait ------------------------------------------------------------ */
 
 .portraitCol {
   position: relative;
+  display: grid;
+  place-items: center;
   min-width: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  aspect-ratio: 1 / 1;
 }
 
 /*
- * The pool of light the figure stands in. Without it the cutout floats on the
- * ground with nothing anchoring it; with it, the shoulders fall off into the
- * background the way they would under a real key light.
+ * The block the cut-out stands on.
+ *
+ * A hard-edged outlined shape rather than a soft glow: this system has no
+ * blur in it anywhere, and a gradient bloom here would be the one soft edge on
+ * the page. The border-radius is deliberately lopsided so it reads as a
+ * drawn blob rather than a rounded rectangle.
  */
-.glow {
+.blob {
   position: absolute;
-  inset: -6% -18% -10%;
-  border-radius: 50%;
-  background:
-    radial-gradient(closest-side, rgba(255, 255, 255, 0.9), rgba(206, 224, 245, 0.5) 55%, transparent 72%);
-  filter: blur(26px);
+  inset: 8% 6% 4%;
+  z-index: 1;
+
+  background: var(--blue);
+  border: var(--outline);
+  border-radius: 46% 54% 42% 58% / 52% 44% 56% 48%;
+  box-shadow: var(--shadow-lg);
 }
 
 .cutout {
   position: relative;
+  z-index: 3;
   width: 100%;
   max-width: 30rem;
   height: auto;
-  /* Blue-grey, never black: a black drop shadow on a pale ground reads as
-     dirt around the silhouette. */
-  filter: drop-shadow(0 20px 38px rgba(35, 60, 110, 0.24));
+  /* Nudged down so the blob reads as ground rather than a halo */
+  transform: translateY(2%);
 }
 
-/* --- credential strip --------------------------------------------------- */
+/* --- loose marks --------------------------------------------------------- */
+
+.marks {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mark {
+  position: absolute;
+  height: auto;
+}
+
+.markStar {
+  top: 2%;
+  left: 2%;
+  width: clamp(1.6rem, 3.4vw, 2.6rem);
+  color: var(--coral);
+  transform: rotate(-12deg);
+}
+
+.markBolt {
+  top: 16%;
+  right: 1%;
+  width: clamp(1.4rem, 3vw, 2.2rem);
+  color: var(--yellow);
+  transform: rotate(10deg);
+}
+
+.markLoop {
+  bottom: 16%;
+  left: 0%;
+  width: clamp(2rem, 4.4vw, 3.2rem);
+  color: var(--blue);
+  transform: rotate(-8deg);
+}
+
+.markArrow {
+  bottom: 4%;
+  right: 4%;
+  width: clamp(2.4rem, 5.4vw, 4rem);
+  color: var(--ink);
+  transform: rotate(6deg);
+}
+
+.markSpark {
+  top: 46%;
+  right: -1%;
+  width: clamp(1.1rem, 2.2vw, 1.6rem);
+  color: var(--mint);
+}
+
+/* --- icon stickers ------------------------------------------------------- */
+
+.orbit {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.8rem;
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.chip[data-chip="blue"] { background: #fff; }
+.chip[data-chip="yellow"] { background: var(--yellow); }
+.chip[data-chip="coral"] { background: var(--coral); color: #fff; }
+.chip[data-chip="mint"] { background: var(--mint); }
+
+/* Seated at the four corners and tilted opposite ways, so they read as pinned
+   on rather than laid out on a grid. */
+.chip[data-seat="tl"] { top: 6%; left: -4%; transform: rotate(-5deg); }
+.chip[data-seat="tr"] { top: 0%; right: -2%; transform: rotate(4deg); }
+.chip[data-seat="bl"] { bottom: 12%; left: -6%; transform: rotate(3deg); }
+.chip[data-seat="br"] { bottom: 2%; right: -3%; transform: rotate(-4deg); }
+
+.chipIcon {
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+}
+
+.chipLabel {
+  line-height: 1;
+}
+
+/* --- credential strip ---------------------------------------------------- */
 
 .strip {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.6rem clamp(1.2rem, 3vw, 2.2rem);
+  gap: 0.6rem 2rem;
 
-  margin-top: clamp(1.5rem, 3.5vh, 2.25rem);
-  padding: clamp(0.9rem, 2vw, 1.2rem) clamp(1.1rem, 2.5vw, 1.6rem);
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  padding: clamp(0.9rem, 2vw, 1.2rem) clamp(1.2rem, 2.6vw, 1.8rem);
 }
 
 .stripLabel {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-faint);
 }
@@ -256,67 +334,38 @@
 .stripItem {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.55rem;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .stripYear {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  color: var(--stone);
+  font-family: var(--font-pixel-face);
+  font-size: 0.8rem;
+  letter-spacing: var(--pixel-tracking);
+  color: var(--blue);
 }
 
-/* --------------------------------------------------------------------------
-   Entrance
-
-   Deliberately CSS, not GSAP. A GSAP `.from()` renders its start state
-   immediately and any scrubbed tween created afterwards records that as its
-   scroll-start, which is what made the old hero blank out on scroll-up.
-   -------------------------------------------------------------------------- */
-
-.reveal {
-  animation: rise 700ms var(--ease-out) both;
-}
-
-.d1 { animation-delay: 60ms; }
-.d2 { animation-delay: 150ms; }
-.d3 { animation-delay: 240ms; }
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* --- responsive --------------------------------------------------------- */
+/* --- responsive ---------------------------------------------------------- */
 
 @media (max-width: 60rem) {
   .masthead {
     grid-template-columns: 1fr;
-    gap: 2.25rem;
+    gap: 2.5rem;
   }
 
-  /* Portrait first on narrow screens: the face is the fastest introduction
-     when there is no room for the name and the photograph side by side. */
+  /* Portrait first: the face introduces him faster than the headline can
+     when there is no room for both side by side. */
   .portraitCol {
     order: -1;
-    max-width: 20rem;
+    max-width: 22rem;
+    margin-inline: auto;
   }
 
-  
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    animation: none;
-  }
+  /* The corner stickers would hang off a narrow viewport, so they tuck in. */
+  .chip[data-seat="tl"] { left: 0%; }
+  .chip[data-seat="tr"] { right: 0%; }
+  .chip[data-seat="bl"] { left: 0%; }
+  .chip[data-seat="br"] { right: 0%; }
 }

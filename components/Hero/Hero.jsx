@@ -44,7 +44,7 @@ const CREDENTIALS = [
 const ORBIT = [
   { key: "agent", Icon: AgentIcon, label: "Agents", tone: "blue", seat: "tl" },
   { key: "cloud", Icon: CloudIcon, label: "Cloud", tone: "yellow", seat: "tr" },
-  { key: "code", Icon: CodeIcon, label: "Code", tone: "coral", seat: "bl" },
+  { key: "code", Icon: CodeIcon, label: "Backend", tone: "coral", seat: "bl" },
   { key: "ship", Icon: TerminalIcon, label: "Ship", tone: "mint", seat: "br" },
 ];
 
@@ -60,7 +60,7 @@ export default function Hero({ nextSectionId = "featured" }) {
             </p>
 
             <h1 className={styles.name}>
-              <span className={styles.nameLine}>I build agents</span>
+              <span className={styles.nameLine}>I build systems</span>
               <span className={styles.nameLine}>
                 that{" "}
                 <span className={styles.nameAccent}>

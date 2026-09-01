@@ -31,3 +31,7 @@ resume-latex/*.out
 /final-art-preview/
 /unique-art/
 /brutal-preview/
+
+# Raw artwork sources. The shipped versions are public/img/work/*.webp;
+# these are the originals, kept out of the build so they never deploy.
+art-sources/

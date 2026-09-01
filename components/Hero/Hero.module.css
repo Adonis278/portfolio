@@ -98,6 +98,9 @@
   font-size: clamp(0.98rem, 1.3vw, 1.1rem);
   font-weight: 700;
   color: var(--blue);
+  /* Three titles wrap to two lines on a phone. Without this the break lands
+     after the last separator and strands "Founder" alone on line two. */
+  text-wrap: balance;
 }
 
 .subtitle {

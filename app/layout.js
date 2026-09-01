@@ -2,7 +2,6 @@ import { Inter, JetBrains_Mono, Fraunces, VT323, Archivo_Black } from "next/font
 import SiteNav from "@/components/ui/SiteNav";
 import SiteFooter from "@/components/ui/SiteFooter";
 import FirebaseAnalytics from "@/components/analytics/FirebaseAnalytics";
-import ServiceWorkerRegistrar from "@/components/pwa/ServiceWorkerRegistrar";
 import { identity } from "@/lib/site";
 import "./globals.css";
 
@@ -96,7 +95,6 @@ export default function RootLayout({ children }) {
         {children}
         <SiteFooter />
         <FirebaseAnalytics />
-        <ServiceWorkerRegistrar />
       </body>
     </html>
   );

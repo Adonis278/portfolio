@@ -13,8 +13,8 @@
         ]
       },
       {
-        "comment": "The hero video is the heaviest asset on the page and never changes in place.",
-        "source": "**/*.@(mp4|webm|woff2)",
+        "comment": "Fonts are content-stable and never change in place.",
+        "source": "**/*.woff2",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
         ]
@@ -27,11 +27,6 @@
       {
         "source": "**/*.html",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
-      },
-      {
-        "comment": "The service worker must never be served stale, or a bad worker outlives its fix. Browsers already bypass the HTTP cache for the SW script, but Firebase would otherwise default this to max-age=3600.",
-        "source": "/sw.js",
-        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       },
       {
         "source": "**",

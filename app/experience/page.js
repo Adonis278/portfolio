@@ -77,9 +77,13 @@ export default function ExperiencePage() {
         <SectionTitle index="04">Education and certifications</SectionTitle>
         <div className={styles.credentials}>
           <div>
-            <h3 className={styles.degree}>{credentials.degree}</h3>
-            <p className={styles.school}>{credentials.school}</p>
-            <p className={styles.detail}>{credentials.detail}</p>
+            {credentials.education.map((entry) => (
+              <div key={entry.degree} className={styles.eduEntry}>
+                <h3 className={styles.degree}>{entry.degree}</h3>
+                <p className={styles.school}>{entry.school}</p>
+                <p className={styles.detail}>{entry.detail}</p>
+              </div>
+            ))}
             <ul className={styles.chips}>
               {credentials.honors.map((item) => (
                 <li key={item}>{item}</li>

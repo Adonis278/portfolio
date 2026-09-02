@@ -63,10 +63,14 @@ export default function ResumePage() {
 
           <div className={styles.block}>
             <h3 className={styles.blockTitle}>Education</h3>
-            <p className={styles.blockLead}>{credentials.degree}</p>
-            <p className={styles.blockMeta}>
-              {credentials.school} · {credentials.detail}
-            </p>
+            {credentials.education.map((entry) => (
+              <div key={entry.degree} className={styles.eduEntry}>
+                <p className={styles.blockLead}>{entry.degree}</p>
+                <p className={styles.blockMeta}>
+                  {entry.school} · {entry.detail}
+                </p>
+              </div>
+            ))}
             <ul className={styles.tags}>
               {credentials.honors.map((honor) => (
                 <li key={honor} className={styles.tag}>

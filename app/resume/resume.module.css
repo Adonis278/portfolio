@@ -300,3 +300,8 @@
     transform: none;
   }
 }
+
+/* Two degrees stack now, so they need separating. */
+.eduEntry + .eduEntry {
+  margin-top: 1rem;
+}

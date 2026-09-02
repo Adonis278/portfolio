@@ -220,3 +220,8 @@
     gap: 0.85rem;
   }
 }
+
+/* Two degrees stack now, so they need separating. */
+.eduEntry + .eduEntry {
+  margin-top: 1rem;
+}

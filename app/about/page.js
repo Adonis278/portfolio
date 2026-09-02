@@ -47,10 +47,14 @@ export default function AboutPage() {
       <div className={styles.intro}>
         <div className={styles.prose}>
           <p>
-            I studied computer science at <strong>Livingstone College</strong>,
-            graduating in May 2026 with a 4.00 GPA, and spent three summers
-            building production software at <strong>Amazon Web Services</strong>,{" "}
-            <strong>Bank of America</strong> and <strong>Ernst &amp; Young</strong>.
+            I studied computer information systems at{" "}
+            <strong>Livingstone College</strong>, graduating summa cum laude in
+            May 2026 with a 4.00 GPA, and I am now a master&rsquo;s student in
+            computer science at{" "}
+            <strong>West Virginia State University</strong>. Along the way I
+            spent three summers building production software at{" "}
+            <strong>Amazon Web Services</strong>, <strong>Bank of America</strong>{" "}
+            and <strong>Ernst &amp; Young</strong>.
           </p>
           <p>
             What holds the work together is a preference for systems that hand

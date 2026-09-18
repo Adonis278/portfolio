@@ -1,69 +1,209 @@
-/* The quiet tier: a name, a line, and a link if one resolves. */
+/* ==========================================================================
+   Also built — sticker tiles
 
-.list {
-  margin: 0;
-  padding: 0 clamp(1.1rem, 3vw, 2rem);
-  list-style: none;
-  overflow: hidden;
-}
+   This was a hairline table left over from the glass build: grey rows, grey
+   mono links, and a description column that started at a different x on every
+   row because each row was its own grid. It now uses the same vocabulary as
+   the six cards above it, one size down.
+   ========================================================================== */
 
-.item {
+.grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.6fr) auto;
-  align-items: baseline;
-  gap: 0.4rem clamp(1rem, 3vw, 2.5rem);
-
-  padding-block: 0.95rem;
-  border-bottom: 1px solid var(--hairline);
+  grid-template-columns: 1fr;
+  gap: clamp(0.9rem, 1.8vw, 1.25rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.item:last-child {
-  border-bottom: none;
+@media (min-width: 40rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
+
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: clamp(1rem, 2vw, 1.3rem);
+
+  /* Set per colour below. Everything inside reads these, so a tile's text
+     colour is decided once, next to its background, where contrast is
+     checked. */
+  --tile-bg: var(--yellow);
+  --tile-fg: var(--ink);
+  background: var(--tile-bg);
+  color: var(--tile-fg);
+
+  transition:
+    transform 320ms var(--ease-out),
+    box-shadow 320ms var(--ease-out);
+}
+
+/*
+ * Four colours over a three-column grid. Because 3 and 4 share no factor, no
+ * tile ever matches the one beside it or the one directly below it.
+ *
+ * Contrast, measured: ink on yellow 13.9:1, on coral 6.1:1, on mint 8.1:1.
+ * Ink on blue is only 3.85:1, so the blue tile flips to white text (4.91:1).
+ */
+.tile:nth-child(4n + 1) { --tile-bg: var(--yellow); }
+.tile:nth-child(4n + 2) { --tile-bg: var(--blue); --tile-fg: #fff; }
+.tile:nth-child(4n + 3) { --tile-bg: var(--coral); }
+.tile:nth-child(4n + 4) { --tile-bg: var(--mint); }
+
+@media (hover: hover) {
+  .tile:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* A hair of tilt, alternating, so the grid reads hand-placed. Desktop only:
+   on one column it just looks crooked. */
+@media (min-width: 64rem) and (hover: hover) {
+  .tile:nth-child(odd) { transform: rotate(-0.6deg); }
+  .tile:nth-child(even) { transform: rotate(0.6deg); }
+  .tile:hover { transform: translate(-3px, -3px) rotate(0deg); }
+}
+
+/* --- head: counter and status ------------------------------------------- */
+
+.tileHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: none;
+
+  background: var(--ink);
+  color: #fff;
+  border-radius: 50%;
+
+  font-family: var(--font-pixel-face);
+  font-size: 0.85rem;
+}
+
+/* On the blue tile the black disc disappears into the outline, so invert. */
+.tile:nth-child(4n + 2) .count {
+  background: #fff;
+  color: var(--ink);
+}
+
+.status {
+  padding: 0.2rem 0.6rem;
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* --- body ---------------------------------------------------------------- */
 
 .name {
-  font-size: 0.98rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 400; /* Archivo Black ships one weight */
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: inherit;
 }
 
 .note {
+  margin: 0;
   font-size: 0.88rem;
   line-height: 1.5;
-  color: var(--text-muted);
+  color: inherit;
   text-wrap: pretty;
 }
 
+/* --- links --------------------------------------------------------------- */
+
 .links {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-self: end;
+  gap: 0.4rem;
+  /* Pushed to the foot so links line up across a row of tiles with notes of
+     different lengths. */
+  margin: auto 0 0;
+  padding: 0.4rem 0 0;
+  list-style: none;
 }
 
 .link {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  /* Flex strips the leading space inside the arrow span, which jammed it
+     against the label ("Live↗"). The gap puts it back. */
+  gap: 0.25rem;
+  padding: 0.36rem 0.7rem;
+
+  background: #fff;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+
+  font-size: 0.7rem;
+  font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
-  color: var(--accent-warm);
-  transition: color var(--ease-duration) var(--ease-out);
+
+  transition:
+    transform var(--ease-duration) var(--ease-out),
+    box-shadow var(--ease-duration) var(--ease-out),
+    background var(--ease-duration) var(--ease-out);
 }
 
-.link:hover,
-.link:focus-visible {
-  color: var(--text-primary);
-  outline: none;
-}
-
-@media (max-width: 52rem) {
-  .item {
-    grid-template-columns: 1fr;
+@media (hover: hover) {
+  .link:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+    background: var(--yellow);
   }
 
-  .links {
-    justify-self: start;
+  /* Yellow on a yellow tile would vanish; go ink instead. */
+  .tile:nth-child(4n + 1) .link:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+}
+
+.link:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .link {
+    transition: none;
+  }
+
+  .tile:nth-child(odd),
+  .tile:nth-child(even),
+  .tile:hover,
+  .link:hover {
+    transform: none;
   }
 }

@@ -41,8 +41,8 @@
   --bg-panel: #ffffff;
 
   /* The triad, at full saturation. Rule 3. */
-  --blue: #2f45e0;
-  --blue-deep: #1e2fb8;
+  --blue: #3a72b8;
+  --blue-deep: #27548c;
   --yellow: #ffc93c;
   --coral: #ff5a45;
   --mint: #3fbf87;
@@ -66,7 +66,10 @@
 
   /* Accent aliases kept so existing rules reskin without being rewritten */
   --accent-warm: var(--blue);
-  --accent-warm-soft: #5566ea;
+  /* Same hue as --blue, only a touch lighter. It is text colour in 16 of its
+     18 uses, so it has to clear 4.5:1 on the page (4.60) and carry white
+     text where it is a fill (4.72). The glass build's #5a91d4 managed 3.2. */
+  --accent-warm-soft: #3c75bb;
   --accent-warm-deep: var(--blue-deep);
   --accent-cool: var(--coral);
   --stone: #5b626c;
@@ -85,8 +88,8 @@
   --hairline: rgba(17, 17, 17, 0.14);
   --hairline-strong: var(--ink);
 
-  --accent-tint: rgba(47, 69, 224, 0.08);
-  --accent-tint-strong: rgba(47, 69, 224, 0.16);
+  --accent-tint: rgba(58, 114, 184, 0.08);
+  --accent-tint-strong: rgba(58, 114, 184, 0.16);
   --accent-line: var(--ink);
 
   /* Status colours become solid badge fills rather than washes */
@@ -98,7 +101,7 @@
   --status-award-wash: var(--yellow);
   --status-build: var(--blue-deep);
   --status-build-line: var(--ink);
-  --status-build-wash: #c9d0ff;
+  --status-build-wash: #cedcee;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);

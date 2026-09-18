@@ -294,7 +294,7 @@
    -------------------------------------------------------------------------- */
 
 .card:nth-child(4n + 1) { --card-accent: var(--yellow); }
-.card:nth-child(4n + 2) { --card-accent: #c9d0ff; }
+.card:nth-child(4n + 2) { --card-accent: #cedcee; }
 .card:nth-child(4n + 3) { --card-accent: #ffd9d3; }
 .card:nth-child(4n + 4) { --card-accent: #bdf0d8; }
 
